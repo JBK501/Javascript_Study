@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #dhBall {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background-image: url("https://ilyo.co.kr/contents/article/images/2023/0831/1693463242941403.jpg");
+        background-size: 100px 100px;
+        position: relative;
+        left: 50px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>모르면 이건 진짜 좌절!</h1>
+    <button id="dhBtn">움직여</button>
+    <button id="autoBtn">알아서 움직여</button>
+    <div id="dhBall"></div>
+
+    <script>
+      const dhBtn = document.querySelector("#dhBtn");
+      const dhBall = document.querySelector("#dhBall");
+      const autoBtn = document.querySelector("#autoBtn");
+
+      function fMove() {
+        // 값이 기술되어 있지 않다면
+        if (!dhBall.style.left) {
+          dhBall.style.left = "100px";
+          dhBall.style.top = "100px";
+        }
+
+        // 오른쪽으로 이동시켜보기
+        dhBall.style.left = parseInt(dhBall.style.left) + 30 + "px";
+      }
+
+      // 자동으로 이동하는 함수.
+      function autoMove() {
+        // 값이 기술되어 있지 않다면 (초기회 설정을 해주지 않으면 이동하지 않는다.)
+        if (!dhBall.style.left) {
+          dhBall.style.left = "100px";
+          dhBall.style.top = "100px";
+        }
+        // 오른쪽으로 이동시켜보기
+        dhBall.style.left = parseInt(dhBall.style.left) + 20 + "px";
+        setTimeout(autoMove, 500);
+      }
+
+      dhBtn.addEventListener("click", fMove);
+      autoBtn.addEventListener("click", autoMove);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 개발자의 의도와 상관없이 this값이 원치않는 시점에 바뀔 수 있다.
+      window.fCk = function () {
+        console.log("체에킁 : ", this);
+      };
+
+      var target = { name: "주현주" };
+      target.merong = fCk;
+
+      target.merong(); // this => target
+      window.fCk(); // this => window
+
+      // var myName = "정많은 윤지"; // 전역변수 선언의 실제 의미는?
+      //   window.myName = "정많은 윤지"; // 위와 같은 의미
+      //   alert(myName);
+      //   alert(window.myName);
+
+      //   function fCk() {
+      //     console.log("체킁:", this); // this = Window
+      //   }
+
+      //   fCk();
+    </script>
+  </body>
+</html>

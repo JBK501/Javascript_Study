@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<meta charset="UTF-8" />
+<script>
+  let fTeam = ["동성", "현승", "석준", "준수", "성도", "도연"];
+
+  let [, ...namuji] = fTeam; /* = 양쪽이 같은 데이터 타입이다. */
+  //   alert("체킁 : " + namuji);
+
+  let hwIdol = {
+    name: "혜원",
+    nickName: "황",
+    style: "웃엉",
+    age: 17,
+  };
+
+  //   let { name, style } = hwIdol;
+  // alert(name);
+  // alert(style);
+
+  // 이름이 충돌날 경우에만 별칭으로 사용한다.
+  //   let { name:nm, style:sy } = hwIdol;
+  //   alert(nm);
+  //   alert(sy);
+
+  // 여기부터 중요포인트! (객체를 전개연산자료 표현한다.)
+  // {} => new Object()
+  // 새로운 속성값도 추가할 수 있다.
+  let newHW = { ...hwIdol, style: "좋은아침", newA: "AI" };
+  console.log("체킁:", newHW === hwIdol); // 다른 값이다.
+  console.log("체킁:", newHW);
+
+  // 어케 쓰면 멋지게 보일깡?
+  // -> 프론트 프레임워크에서 매개변수를 요따구로 넘겨 받아용
+  // { name, style, age } = hwIdol
+  function fNice({ name, style, age }) {
+    alert(`${name} ${style} ${age}`);
+  }
+  fNice(hwIdol);
+</script>

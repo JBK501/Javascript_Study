@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<meta charset="UTF-8" />
+<script>
+  //   let blackPink = [];
+  //   blackPink = [...blackPink, "로제"];
+  //   alert("blackPink 1: " + blackPink);
+  //   blackPink = [...blackPink, "제니"];
+  //   alert("blackPink 2: " + blackPink);
+  //   blackPink = [...blackPink, "리사"];
+  //   alert("blackPink 3: " + blackPink);
+  //   blackPink = [...blackPink, "지수"];
+  //   alert("blackPink 4: " + blackPink);
+
+  //   let bts = [];
+  //   bts = [...bts, "진", "슈가", "제이홉", "RM"];
+  //   alert("bts 1 : " + bts);
+  //   bts = [...bts, "지민", "뷔", "정국"];
+  //   alert("bts 2 : " + bts);
+
+  //   const newGroup = [...bts, ...blackPink];
+  //   alert("newGroup" + newGroup);
+
+  const justArr = ["태양", "지드래곤", "대성", "탑"];
+  const testObj = { ...justArr };
+  console.log("testObj", testObj);
+
+  //  아래 => 뒤에 꼬옥 괄호가 필요한 이유는? : return 문을 명확하게 지정하기 위함이다.
+  // ...objs : 객체 스프레드 연산자로, objs 배열의 모든 요소를 새로운 객체에 복사한다.
+  const objSum = (...objs) => ({ ...objs });
+
+  // 생략없는 원모습
+  //   const objSum = (...objs) => {
+  //     return { ...objs };
+  //   };
+
+  const miley = { name: "마일리 사이러스", song: "flower" };
+  const gaga = { name: "레이디 가가", song: "rain" };
+
+  console.log("objSum", objSum(miley, gaga)); // miley, gaga를 복사해서 리터럴(RValue)로 뿌린다.
+</script>

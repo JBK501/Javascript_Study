@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<meta charset="UTF-8" />
+<script>
+  //   function fCk() {
+  //     return new Promise((res, rej) => {
+  //       //   res("혜원 성공"); // then()
+  //       rej("혜원 실패"); // catch()
+  //     });
+  //   }
+
+  //   fCk()
+  //     .then((fbi) => {
+  //       console.log("체킁1", fbi);
+  //     })
+  //     .catch((err) => {
+  //       console.log("체킁2", err);
+  //     })
+  //     .finally(() => {
+  //       // 클라이언트 사이드에서 finally는 무시해도 괜찮다.
+  //       console.log("저는 거의 안 쓰여요~~ ㅠㅠ");
+  //       console.log("왜냐면 할 수 있는게 별로 없어용");
+  //     });
+
+  function fCk2() {
+    return new Promise((res, rej) => {
+      let xhr = new XMLHttpRequest();
+      xhr.open("get", "data.csv", true);
+      // onload로 더 간단하게 표현할 수 있다.
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+          res(xhr.responseText);
+        }
+      };
+      xhr.onerror = function () {
+        let err = new Error("나중에 다시 해주삼 미안");
+        rej(err);
+      };
+      xhr.send();
+    });
+  }
+
+  //   fCk2()
+  //     .then((hwSuccess) => {
+  //       console.log("체킁1", hwSuccess);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+
+  // async & await
+  async function getData() {
+    let response = await fCk2(); // Promise를 리턴하는 함수는 await를 쓸 수 있다.
+    console.log("잘되낭?", response);
+    alert("은주 자?");
+  }
+  getData();
+  alert("승환 안자?");
+
+  // Axios 흉내내기
+  const axios = {};
+  // axios.get("url")
+  axios.get = function (pURL) {
+    return new Promise((res, rej) => {
+      let xhr = new XMLHttpRequest();
+      xhr.open("get", pURL, true);
+      // onload로 더 간단하게 표현할 수 있다.
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+          res(xhr.responseText);
+        }
+      };
+      xhr.onerror = function () {
+        let err = new Error("나중에 다시 해주삼 미안");
+        rej(err);
+      };
+      xhr.send();
+    });
+  };
+
+  // 방법1
+  //   axios.get("data.csv").then((rslt) => console.log("혜원1", rslt));
+  //   axios.get("문제1.html").then((rslt) => console.log("혜원2", rslt));
+
+  //방법2
+  async function getData() {
+    let res1 = await axios.get("data.csv");
+    let res2 = await axios.get("문제2.html");
+    console.log("체킁1 :", res1);
+    console.log("체킁2 : ", res2);
+  }
+</script>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #dhArea {
+        width: 800px;
+        height: 600px;
+        border: 1px solid pink;
+        position: relative;
+      }
+
+      #dhBall {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background-image: url("https://ilyo.co.kr/contents/article/images/2023/0831/1693463242941403.jpg");
+        background-size: 100px 100px;
+        position: absolute;
+        left: 50px;
+        top: 50px;
+      }
+    </style>
+  </head>
+  <body>
+    <button id="autoBtn">알아서 움직여</button>
+    <button id="stopBtn">멈춤</button>
+    <div id="dhArea">
+      <div id="dhBall"></div>
+    </div>
+  </body>
+
+  <script>
+    let timerId = null; // 타이머를 중지시키기 위한 변수
+
+    const autoBtn = document.querySelector("#autoBtn");
+    const stopBtn = document.querySelector("#stopBtn");
+
+    // 멈춤 버튼 처리
+    function fStop() {
+      clearTimeout(timerId);
+      isStart = false; // 멈춤 표시
+    }
+    stopBtn.addEventListener("click", fStop);
+
+    let isStart = false; // 시작 안된 상태 표현
+    function fProxy() {
+      if (!isStart) {
+        isStart = true;
+        autoMove();
+      }
+    }
+
+    let myGaro = 30;
+    let mySero = 30;
+    let degree = 0;
+    function autoMove() {
+      degree = (degree % 360) + 10;
+      dhBall.style.transform = `rotate(${degree}deg)`;
+      // 값이 기술되어 있지 않다면 (초기회 설정을 해주지 않으면 이동하지 않는다.)
+      if (!dhBall.style.left) {
+        dhBall.style.left = "200px";
+        dhBall.style.top = "200px";
+      }
+
+      // 왼쪽, 오른쪽 모서리에 닿으면, 방향을 바꾼다.
+      if (
+        parseInt(dhBall.style.left) + 100 >= 800 ||
+        parseInt(dhBall.style.left) <= 0
+      ) {
+        myGaro = -myGaro; // 부호를 이용하여 방향을 바꾼다.
+        // dhBall.style.transform = "skewY(45deg)";
+      }
+
+      // 위, 아래 모서리에 닿으면 방향을 바꾼다.
+      if (
+        parseInt(dhBall.style.top) + 100 >= 600 ||
+        parseInt(dhBall.style.top) <= 0
+      ) {
+        mySero = -mySero; // 부호를 이용하여 방향을 바꾼다.
+        // dhBall.style.transform = "skewX(45deg)";
+      }
+
+      //이동시키기
+      dhBall.style.left = parseInt(dhBall.style.left) + myGaro + "px";
+      dhBall.style.top = parseInt(dhBall.style.top) + mySero + "px";
+      timerId = setTimeout(autoMove, 100);
+    }
+
+    // 이벤트 실행
+    autoBtn.addEventListener("click", fProxy);
+  </script>
+</html>

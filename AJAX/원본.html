@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="disp"></div>
+  </body>
+  <script>
+    const disp = document.querySelector("#disp");
+    // xhr이 현재 전역변수 이대로 괜찮은가?
+    // 일반적인 상황에선 좋지않다. 퀵배송 아제한테 서울가라고 했다가, 갑자기 부산가라고 하는꼴이 날 수 있다.
+
+    let xhr = new XMLHttpRequest(); // AJAX 원본 (퀵 서비스 아저씨 호출)
+    // xhr.open("Method", "URL", "비동기여부"); // 할 일 지정
+    xhr.open("get", "http://localhost:8272/jsstudy/AJAX/data.html", true); // 할 일 지정
+
+    // 시킨 일을 모니터링한다.(스타벅스 진동벨) (이벤트 등록을 먼저함.)
+    xhr.onreadystatechange = function () {
+      // 시킨대로 다 진행되었다면
+      if (xhr.readyState == 4 && xhr.status == 200) {
+        alert("난 학균이가 시롱!! from 장민");
+        disp.innerHTML = xhr.response; // 서버에서 받아온 값을 출력한다.
+      }
+    };
+
+    xhr.send(); // 시킨대로 하세용 (전송)
+    alert("난 학균이가 넘 좋앙!!");
+  </script>
+</html>

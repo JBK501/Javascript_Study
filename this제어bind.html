@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button id="yhkBtn">눌러방</button>
+    <script>
+      const yjOut = document.write.bind(document);
+      yjOut("<h1>나 은주 우주 천재</h1>");
+      yjOut("<h3>동의 하낭?</h3>");
+
+      // bind
+      //   const yhkBtn = document.querySelector("#yhkBtn");
+
+      //   function fCk(pName) {
+      //     console.log("this 체킁 : ", this);
+      //     alert(`안농 ${pName}`);
+      //   }
+
+      //   const yj = {
+      //     name: "은주 짱",
+      //     nick: "체력짱",
+      //   };
+
+      //   // ()를 붙이면 호출문법이 된다.
+      //   // 따라서 클릭이벤트 실행전에 바로 실행이 된다.
+      //   // 이때 bind를 사용한다.
+      //   // 첫번재 매개변수는 this가 가리키는 객체
+      //   // 두번째 매개변수가 값
+      //   yhkBtn.addEventListener("click", fCk.bind(yj, "장민"));
+    </script>
+  </body>
+</html>

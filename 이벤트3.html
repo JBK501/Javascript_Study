@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div onclick="fCK()" data-name="ej" style="border: 1px solid black">
+      수현
+      <span style="border: 1px solid pink">나 은주</span>
+    </div>
+  </body>
+  <script>
+    function fCK() {
+      //   if (event.target.dataset.name == "ej") {
+      //     alert("나 은주얌");
+      //   }
+      if (event.currentTarget.dataset.name == "ej") {
+        alert("나 은주얌");
+      }
+
+      console.log("체킁1 : ", event.target);
+      console.log("체킁2 : ", event.currentTarget);
+    }
+  </script>
+</html>

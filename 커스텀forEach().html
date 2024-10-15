@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<meta charset="UTF-8" />
+<script>
+  // 1. 배열에 사용되는 for문 of
+  //   const bgArr = ["보규", "장민", "은주"];
+  //   for (let name of bgArr) {
+  //     console.log("체킁 : ", name);
+  //   }
+
+  // 2. 객체에 사용되는 for문 (in)
+  const bgObj = { name: "보규", age: 23, nickName: "메롱" };
+  for (let attr in bgObj) {
+    console.log("체킁 key : ", attr);
+    console.log("체킁 value : ", bgObj[attr]);
+  }
+
+  // 3. 객체의 속성들을 배열로 리턴해주는 방법
+  alert(Object.keys(bgObj));
+
+  // 4. [콜백함수를 이용한 forEach 라이브러리 제작] forEach는 만들어 쓸 수 있다.
+  const BgArr = function () {
+    this.length = 0;
+    return this;
+  };
+
+  // 4.1. push 메소드 만들기
+  BgArr.prototype.push = function (pVal) {
+    this[this.length] = pVal;
+  };
+</script>

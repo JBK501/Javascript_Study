@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #disp {
+        height: 400px;
+        border: 10px solid blueviolet; /* 레이아웃을 구성할때는 항상 사용을 권장한다.(만들고나서 레이아웃을 없애면 된다.) */
+        overflow: scroll; /* 자식이 부모를 넘치지 못하게 설정하기(요걸 빼먹어서 안되는 경우가 많음) */
+      }
+    </style>
+  </head>
+  <body>
+    <h1>아마도 이런방식이 더 많이 쓰일꺼예용</h1>
+    <div id="disp"></div>
+
+    <script>
+      const disp = document.querySelector("#disp");
+
+      // h1 위에 마우스 올릴때
+      function fOver() {
+        event.target.style.color = "yellow";
+        event.target.style.backgroundColor = "black";
+      }
+
+      // h1 에서 마우스 뺄때
+      function fOut() {
+        event.target.style.color = "black";
+        event.target.style.backgroundColor = "white";
+      }
+
+      function fScroll() {
+        let scrollTop = disp.scrollTop;
+        let clientHeight = disp.clientHeight; // 실제 높이값을 가져와도 무관
+        let scrollHeight = disp.scrollHeight;
+
+        let tunning = 20;
+        // 사용자가 스크롤바를 거의 끝까지 내렸다면(끝에서 20px위)
+        if (scrollTop + clientHeight >= scrollHeight - tunning) {
+          // ajax를 이용해서 데이터를 가져온다.
+          for (let i = 1; i <= 5; i++) {
+            let h1 = document.createElement("h1");
+            let ranNum = Math.ceil(Math.random() * 100);
+            h1.innerHTML = `호세는 ${ranNum}번 장염에 걸렸어용`;
+            disp.append(h1);
+
+            /* 마우스 이벤트 등록 */
+            h1.addEventListener("mouseover", fOver);
+            h1.addEventListener("mouseout", fOut);
+          }
+        }
+      }
+
+      // div에 scroll 이벤트
+      disp.addEventListener("scroll", fScroll);
+
+      // 초기화 블록
+      // 즉각실행함수 형식 사용
+      (function () {
+        for (let i = 1; i <= 10; i++) {
+          let h1 = document.createElement("h1");
+          h1.innerHTML = `무한스크롤 ver2. (${i})`;
+          disp.append(h1); // 화면에 실제로 추가한다.
+        }
+        disp.scrollTo(0, 0); // Element의 스크롤은 시간차를 주지 않아도, 새로고침시 바로 맨 위로 이동한다.
+      })();
+    </script>
+  </body>
+</html>

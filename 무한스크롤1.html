@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>무한스크롤 강의1</h1>
+    <h1>무한스크롤 강의2</h1>
+    <h1>무한스크롤 강의3</h1>
+    <h1>무한스크롤 강의4</h1>
+    <h1>무한스크롤 강의5</h1>
+    <h1>무한스크롤 강의6</h1>
+    <h1>무한스크롤 강의7</h1>
+    <h1>무한스크롤 강의8</h1>
+    <h1>무한스크롤 강의9</h1>
+    <h1>무한스크롤 강의10</h1>
+  </body>
+
+  <script>
+    // 새롣고침하면 스크롤바 위치를 맨위로 올려 놓아야 한다. (요게 문제!)
+    // 크롬에서만 문제가 있다! (스크롤바 위치가 변하지 않음)
+    // window.scrollTo("x축값", "y축값");
+    // window.scrollTo(0, 0); // 동작안함!!!
+
+    // 구글의 답변대로, 미묘한 시간을 주어서 제어
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 100);
+
+    let cnt = 1;
+
+    // 스크롤 이벤트 모니터링을 한다.
+    // 사용자가 스크롤을 다 내렸는지 알아야 하기 때문이다.
+    function fScroll() {
+      console.log("scrollTop : ", document.documentElement.scrollTop);
+      console.log("clientHeight : ", document.documentElement.clientHeight);
+      console.log("scrollHeight : ", document.documentElement.scrollHeight);
+      console.log("=============================================");
+
+      let scrollTop = document.documentElement.scrollTop;
+      let clientHeight = document.documentElement.clientHeight;
+      let scrollHeight = document.documentElement.scrollHeight;
+
+      // 스크롤바를 다 내렸다면
+      // 끝에서 처리 안하고, 살짝 위에서 처리한다.
+      // 따라서 튜닝값을 준다. (스크롤 바를 다 내리지 않고, 약간 남겼을 때를 의미한다.)
+      const tunning = 150; // 50px로 튜닝값 설정
+
+      if (scrollTop + clientHeight >= scrollHeight - tunning) {
+        // 보통 여기서 ajax를 통해 서버에서 추가 데이터를 가져온 후, 화면에 추가한다.
+        for (let i = 1; i <= 5; i++) {
+          let h1 = document.createElement("h1");
+          h1.innerHTML = `미니는 미닌데 왜 컹${i * cnt}`;
+          document.body.appendChild(h1);
+        }
+        cnt++;
+      }
+    }
+
+    /* 스크롤 이벤트 등록 */
+    window.addEventListener("scroll", fScroll);
+  </script>
+</html>

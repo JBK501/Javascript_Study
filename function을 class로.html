@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body></body>
+  <script>
+    // 고급주제 - 생성자 함수
+    // 자바스크립트에서 function 키워드가 class 의미로도 쓰일 수 있다.
+    function Idol(name, songs) {
+      this.name = name; // 속성 또는 필드라고 부른다.
+      this.songs = songs;
+
+      // 메소드
+      //   this.welcome = function (pName) {
+      //     alert(`난 ${this.name}라고 해 ${pName} 안농`);
+      //   };
+
+      return this; // 명시적 표현 생략가능
+    }
+
+    // 프로토타입으로 메소드 공유하기
+    Idol.prototype.welcome = function (pName) {
+      alert(`난 ${this.name}라고 해 ${pName} 안농`);
+    };
+
+    let ej = new Idol("은주", ["Gone", "찬송가"]); // Idol이 class의 의미로 쓰였다.따라서 호출방법이 다르다.
+    ej.welcome("보규");
+
+    let jm = new Idol("장민", ["잠이와", "안자"]);
+    jm.welcome("호세");
+
+    console.log(ej);
+  </script>
+</html>

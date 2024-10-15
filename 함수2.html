@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      (function () {
+        alert("이걸 머라 부를까용?");
+      })();
+
+      fYG1();
+
+      fYG2(); // 초기화하기전에 접근할 수 없다.
+
+      // 인터프리터 : 엔진이 명령어 단위별로 해석하는 방식
+      //             디버깅에 유리하다.
+      // 컴파일 : 기계어로 한방에 번역한 후, 사용한다.
+      //          속도가 빠르다.
+
+      // 호이스팅(hoisting) : 스크립트 엔진이, 선언부를 위로 올리는 방식
+      //                     함수 실행을 선언부 위에서 할 수 있다.
+
+      // 정식 함수 선언법
+      function fYG1() {
+        alert("윤지 흥");
+      }
+
+      // 표현식(expression)을 이용한 함수 선언
+      // 요즘 자주 사용하는 함수표현이다.
+      const fYG2 = function () {
+        alert("요것도 함수지용");
+      };
+    </script>
+  </body>
+</html>

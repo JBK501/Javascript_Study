@@ -1,0 +1,117 @@
+[
+  {
+    "id": "S1",
+    "parent": "#",
+    "text": "SI 사업부",
+    "icon": "glyphicon glyphicon-home"
+  },
+  {
+    "id": "S2",
+    "parent": "#",
+    "text": "솔루션 사업부",
+    "alias": "ㅋㅋㅋ",
+    "icon": "glyphicon glyphicon-home"
+  },
+  {
+    "id": "S3",
+    "parent": "#",
+    "text": "AI 사업부",
+    "icon": "glyphicon glyphicon-home"
+  },
+  {
+    "id": "S11",
+    "parent": "S1",
+    "text": "공공SI",
+    "icon": "glyphicon glyphicon-picture"
+  },
+  {
+    "id": "S12",
+    "parent": "S1",
+    "text": "일반SI",
+    "icon": "glyphicon glyphicon-picture"
+  },
+  {
+    "id": "S21",
+    "parent": "S2",
+    "text": "그룹웨어",
+    "icon": "glyphicon glyphicon-picture"
+  },
+  {
+    "id": "S22",
+    "parent": "S2",
+    "text": "MES",
+    "icon": "glyphicon glyphicon-picture"
+  },
+  {
+    "id": "S23",
+    "parent": "S2",
+    "text": "ERP",
+    "icon": "glyphicon glyphicon-picture"
+  },
+  {
+    "id": "S31",
+    "parent": "S3",
+    "text": "이미지처리",
+    "icon": "glyphicon glyphicon-picture"
+  },
+  {
+    "id": "S32",
+    "parent": "S3",
+    "text": "음성처리",
+    "icon": "glyphicon glyphicon-picture"
+  },
+  {
+    "id": "S33",
+    "parent": "S3",
+    "text": "자연어처리",
+    "icon": "glyphicon glyphicon-picture"
+  },
+  {
+    "id": "J01",
+    "parent": "S11",
+    "text": "송불곰",
+    "icon": "glyphicon glyphicon-user"
+  },
+  {
+    "id": "J02",
+    "parent": "S31",
+    "text": "강사자",
+    "icon": "glyphicon glyphicon-user"
+  },
+  {
+    "id": "J03",
+    "parent": "S22",
+    "text": "송호랑",
+    "icon": "glyphicon glyphicon-user"
+  },
+  {
+    "id": "J04",
+    "parent": "S32",
+    "text": "이늑대",
+    "icon": "glyphicon glyphicon-user"
+  },
+  {
+    "id": "J05",
+    "parent": "S33",
+    "text": "감여우",
+    "icon": "glyphicon glyphicon-user"
+  },
+  {
+    "id": "J06",
+    "parent": "S12",
+    "text": "공수달",
+    "icon": "glyphicon glyphicon-user"
+  },
+  {
+    "id": "J07",
+    "parent": "S23",
+    "text": "황악어",
+    "icon": "glyphicon glyphicon-user"
+  },
+  {
+    "id": "J08",
+    "parent": "S22",
+    "text": "홍문어",
+    "icon": "glyphicon glyphicon-user"
+  }
+]

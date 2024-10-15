@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="disp"></div>
+    <script>
+      // 요즘 자주 쓰는 방식, 글자 수 아끼기
+      let name = "추은주";
+      let alias = "추운줄";
+      let alias2 = "은혜로운 추위";
+      let testObj = {
+        name: name,
+        alias: alias,
+        alias2: alias2,
+      };
+      console.log("그냥 확인 : ", testObj);
+
+      const disp = document.querySelector("#disp");
+
+      const members = [
+        { name: "황혜원", age: 19, grade: "level1" },
+        { name: "조윤지", age: 29, grade: "level3" },
+        { name: "이희진", age: 39, grade: "level4" },
+        { name: "이성훈", age: 49, grade: "level2" },
+        { name: "주현주", age: 59, grade: "level4" },
+        { name: "장현재", age: 69, grade: "level2" },
+      ];
+
+      const positions = {
+        level1: "사장님",
+        level2: "팀장님",
+        level3: "메롱님",
+        level4: "사원님",
+      };
+
+      // 테이블은 주로 문자열 더하기를 이용하여 만든다.
+      let tblStr = "<table border=1>";
+      tblStr += `<tr>
+            <th>번호</th>
+            <th>이름</th>
+            <th>나이</th>
+            <th>직급</th>
+        </tr>`;
+
+      for (let i = 0; i < members.length; i++) {
+        let member = members[i];
+        tblStr += `
+            <tr>
+                <td>${i}</td>
+                <td>${member.name}</td>
+                <td>${member.age}</td>
+                <td>${positions[member.grade]}</td>
+            </tr>
+        `;
+      }
+      tblStr += "</table>";
+      disp.innerHTML = tblStr;
+    </script>
+  </body>
+</html>

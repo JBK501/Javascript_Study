@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<meta charset="UTF-8" />
+<script>
+  function fCk(pA, ...all) {
+    alert(pA);
+    console.log("체킁 : ", all);
+  }
+
+  // fCk("황", "혜", "원", "오", "뎅");
+
+  // 값이 넘어오지 않을 때 사용할 초기값
+  function fCk2(pName = "호세") {
+    alert(pName + " 안농");
+  }
+
+  fCk2("은혜");
+</script>

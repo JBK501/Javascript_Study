@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      "use strict"; // 엄격모드 적용 / 변수 선언 없이 못쓰게 그외 추가적으로 더 체크해줌.
+      /*
+      var superStar = "은주";
+      alert(superStar);
+      */
+
+      // var, let, const 차이 (let, const 는 다른언어와 호환성을 위해 나중에 추가됨.)
+      function fTest() {
+        {
+          var ej1 = "은주 만만세";
+          let ej2 = "은주 안만세";
+        }
+        // alert("체킁1 " + ej2); // ng! 왱? life cycle(삶의 경계선이 {}에서 나눠진다.)
+        alert("체킁2" + ej1); // ok! 왱? life cycle(삶의 경계선이 function 내부다.)
+      }
+
+      fTest(); // 함수 호출
+      //   alert("체킁2" + ej1); // ng! | var값은 function 외부에서는 사용할 수 없다.
+
+      const merong = "은주 메롱";
+      //   merong = "은주 안 메롱";
+
+      const ej = {
+        name: "은주",
+        nickName: "금수저",
+      };
+
+      ej.nickName = "다이아몬드수저";
+      console.log("체에킁 : ", ej);
+
+      ej = []; //
+    </script>
+  </body>
+</html>

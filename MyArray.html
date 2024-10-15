@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<meta charset="UTF-8" />
+<script>
+  // 배열 클래스 선언
+  const MyArray = function () {
+    this.length = 0; // 배열의 핵심 속성 length 추가
+    return this; // 생략가능 / 암묵적 존재
+  };
+
+  // push 메소드 구현
+  MyArray.prototype.push = function (pElem) {
+    this[this.length] = pElem; // 동적 프로퍼티 추가(this.length를 인덱스로 하는 새로운 프로퍼티를 추가하고 값을 할당한다.)
+    this.length++;
+    return this; // this를 리턴해줌으로써 메소드 체이닝이 가능함.
+  };
+
+  // pop 메소드 구현
+  MyArray.prototype.pop = function () {
+    let retVal = this[this.length - 1];
+    delete this[this.length - 1];
+    this.length--;
+    return retVal;
+  };
+
+  // includes 메소드 구현
+  MyArray.prototype.includes = function (pSearchElem, pIndex) {
+    let sIndex = 0;
+    if (pIndex) sIndex = pIndex;
+
+    let rslt = false;
+    for (let i = sIndex; i < this.length; i++) {
+      if (this[i] == pSearchElem) {
+        rslt = true;
+        break;
+      }
+    }
+    return rslt;
+  };
+
+  // forEach 메소드 구현
+  MyArray.prototype.forEach = function (pCallback) {
+    for (let i = 0; i < this.length; i++) {
+      pCallback(this[i], i, this); // 현재 순회한 값, 인덱스, 배열전체정보를 전달한다.
+    }
+  };
+
+  // map 메소드 구현
+  MyArray.prototype.map = function (pCallback) {
+    let newArr = new MyArray();
+    for (let i = 0; i < this.length; i++) {
+      newArr[i] = pCallback(this[i], i, this);
+    }
+    return newArr;
+  };
+
+  // reduce 메소드 구현
+  MyArray.prototype.reduce = function (pCallback, pInitValue) {
+    let accumulator = this[0];
+    let sIndex = 1;
+    if (pInitValue) {
+      accumulator = pInitValue;
+      sIndex = 0;
+    }
+
+    for (let i = sIndex; i < this.length; i++) {
+      accumulator = pCallback.call(this, accumulator, this[i], i);
+    }
+
+    return accumulator;
+  };
+
+  // filter 메소드 구현
+  MyArray.prototype.filter = function (pCallback) {
+    let filterArr = [];
+    for (let i = 0; i < this.length; i++) {
+      if (pCallback(this[i], i)) {
+        filterArr.push(this[i]);
+      }
+    }
+    return filterArr;
+  };
+
+  // of 메소드 구현 (static 메소드)
+  MyArray.of = function (...pArgs) {
+    let newArr = new MyArray();
+    for (let i = 0; i < pArgs.length; i++) {
+      newArr.push(pArgs[i]);
+    }
+    return newArr;
+  };
+
+  // 테스트
+  const testArr = new MyArray();
+  console.log("생성 체크 : ", testArr);
+
+  // push 테스트
+  testArr.push("로제").push("제니").push("지수").push("리사");
+  console.log("push 체크 : ", testArr);
+
+  // pop 테스트
+  testArr.pop();
+  console.log("pop 체크 : ", testArr);
+
+  // includes 테스트
+  let rslt1 = testArr.includes("로제");
+  let rslt2 = testArr.includes("이사");
+  console.log("includes 체크(true): ", rslt1);
+  console.log("includes 체크(false) : ", rslt2);
+
+  // forEach 테스트 (원하는 매개변수만 뽑아서 사용할 수 있음)
+  testArr.forEach((value, index) => {
+    console.log(`포이치 테스트${index + 1} : `, value);
+  });
+
+  // map 테스트
+  let newArr = testArr.map((value, index) => {
+    return value + " ------- 맵 테스트!";
+  });
+
+  console.log(newArr);
+
+  // reduce 테스트
+  let reduceRslt = testArr.reduce((accm, val, index) => {
+    if (index == this.length - 1) {
+      return accm + " 만세 " + val + " 만세 ";
+    }
+    return accm + "만세 " + val;
+  });
+
+  console.log("reduce 테스트 : ", reduceRslt);
+
+  // filter 테스트
+  let filterdRslt = testArr.filter(
+    (value) => value == "제니" || value == "지수"
+  );
+
+  console.log("filter 테스트 : ", filterdRslt);
+
+  // of 테스트
+  let ofArr = MyArray.of("나연", "모모", "지효", "미나", "채영");
+  console.log("of 테스트 : ", ofArr);
+</script>

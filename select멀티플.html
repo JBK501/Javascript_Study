@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .merong {
+        display: inline-block;
+        width: 150px;
+        height: 300px;
+        border: 1px solid black;
+        vertical-align: top; /* 위로 올리기 */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="merong">
+      <select id="jsel1" multiple size="5">
+        <option value="js">자바스크립트</option>
+        <option value="java">자바</option>
+        <option value="spring">스프링</option>
+        <option value="oracle" selected>오라클</option>
+        <option value="jsp">JSP</option>
+      </select>
+    </div>
+    <div class="merong">
+      <br /><br /><br /><br /><br /><br />
+      <button onclick="fselMv()">></button> <br />
+      <button onclick="fallMv()">>></button>
+    </div>
+    <div class="merong">
+      <select id="jsel2" size="6"></select>
+    </div>
+  </body>
+  <script>
+    // 화면에서 이동시키는 법을 알것!
+    const jsel1 = document.querySelector("#jsel1");
+    const jsel2 = document.querySelector("#jsel2");
+
+    // [선택이 된 값을 옮기는 함수]
+    function fselMv() {
+      // 1. 좌측 select의 option들을 가져온다.
+      let opts = jsel1.options;
+      // 2. option개수만큼 반복한다.
+      for (let i = 0; i < opts.length; i++) {
+        // 2.1. 선택된 값이라면
+        if (opts[i].selected) {
+          jsel2.appendChild(opts[i]); // 2.1.1. 우측 select에 option을 옮긴다.
+
+          // 이동하면 i값이 1개씩 앞으로 땡겨진다.
+          i--; // 강제로 i값 증가를 막는다.
+        }
+      }
+    }
+
+    // [모든 값을 옮기는 함수]
+    function fallMv() {
+      // 1. 좌측 select의 option들을 가져온다.
+      let opts = jsel1.options;
+      // 2. option개수만큼 반복한다.
+      for (let i = 0; i < opts.length; i++) {
+        jsel2.appendChild(opts[0]); // 2.1. 우측 select에 option을 옮긴다.
+        i--; // length가 자동으로 줄기 때문에, 필요하다.
+      }
+    }
+  </script>
+</html>

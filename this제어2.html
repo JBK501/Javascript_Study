@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // this 제어 방법
+      // call, apply, bind
+
+      function fHJ(pA, pB, pC) {
+        console.log("현주?", this);
+        console.log("매개변수 : ", pA, pB, pC);
+      }
+
+      // fHJ(); // this => window | window.fHJ()와 같기 때문
+
+      // call 방법
+      fHJ.call(document, "흥", "치", "피");
+      fHJ.call({ name: "주현주" }, "흥", "치", "피");
+      fHJ.call({ name: "이동현", status: "오늘 많이 졸림" }, "흥", "치", "피");
+    </script>
+  </body>
+</html>

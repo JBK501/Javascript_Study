@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>나 짱민이얌!</h1>
+    <button onclick="fCk()">열린창 값 제어</button>
+  </body>
+  <script>
+    function fCk() {
+      // 열어준 부모창을 제어하기위한 키워드 (opener)
+      opener.document.querySelector("#jmTxt").value += "바봉";
+    }
+  </script>
+</html>

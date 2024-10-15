@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<meta charset="UTF-8" />
+<script>
+  let another = "넌 누구냥?";
+</script>
+<script type="module">
+  import { myName, myHobboy } from "./hwModule.js";
+  import { myName as yjName } from "./yjModule.js"; // 별칭을 활용해서, 이름중복을 막는다.
+  import fbi from "./hwModule.js"; // default 값을 가져옴.
+
+  //   fbi();
+  //   myName();
+  //   yjName();
+
+  alert(another);
+
+  // 모듈 안에서 선언된건 딴데서는 못 읽어용
+  // isolation(분리) 완성! .. 큰 큐모의 프로젝트에 넘 필요!
+  let testValue = "난 module에서 선언 되었어용";
+</script>
+<script>
+  alert(testValue); // 안 읽혀 ==> 너무 좋앙!!
+</script>

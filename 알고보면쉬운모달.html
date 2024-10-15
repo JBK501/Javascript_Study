@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #myModal {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        left: 0px;
+        top: 0px;
+        background-color: rgba(0, 255, 0, 0.8);
+        z-index: 999999; /* 큰 값이 무조건 맨 앞레이어 */
+        display: none; /* 안보이면서 자리차지 않함. */
+      }
+      #myCont {
+        width: 50%;
+        height: 70vh;
+        margin: 30px auto; /* 가운데 정렬 */
+        background-color: pink;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="myModal">
+      <div id="myCont">
+        <span onclick="fModalClose()">X</span>
+        <h1>호세 호세 짜앙</h1>
+      </div>
+    </div>
+
+    <div id="wrapper">
+      <!-- 메인 영역 -->
+      <h1>보규 만만세</h1>
+      <button onclick="fClk()">눌렁</button>
+      <button onclick="fModalOpen()">모달열기</button>
+    </div>
+  </body>
+
+  <script>
+    const myModal = document.querySelector("#myModal");
+
+    function fModalClose() {
+      myModal.style.display = "none";
+    }
+
+    function fModalOpen() {
+      myModal.style.display = "block";
+    }
+
+    function fClk() {
+      alert("눌렀닝 체킁?");
+    }
+  </script>
+</html>

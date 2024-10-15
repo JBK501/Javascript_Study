@@ -1,0 +1,36 @@
+[
+  {
+    "id": "syr001",
+    "title": "기숙사구현",
+    "start": "2023-09-06",
+    "end": "2023-09-09",
+    "allDay": true,
+    "backgroundColor": "magenta",
+    "textColor": "white",
+    "extendedProps": {
+      "comment": "기숙사가고팡"
+    }
+  },
+  {
+    "id": "syr002",
+    "title": "최프착수보고",
+    "start": "2023-09-07T14:00",
+    "end": "2023-09-07T15:00",
+    "textColor": "magenta",
+    "extendedProps": {
+      "comment": "최프발표"
+    }
+  },
+  {
+    "id": "syr003",
+    "title": "기숙사사용통계",
+    "start": "2023-09-06",
+    "end": "2023-09-07",
+    "backgroundColor": "magenta",
+    "textColor": "white",
+    "allDay": true,
+    "extendedProps": {
+      "comment": "기숙사기능확장"
+    }
+  }
+]

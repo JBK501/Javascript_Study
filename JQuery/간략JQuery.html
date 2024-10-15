@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<meta charset="UTF-8" />
+<body>
+  <div class="sjo">추</div>
+  <div class="sjo">석</div>
+  <div class="hwo">준</div>
+  <div class="sjo">난</div>
+  <div class="hwo">타</div>
+</body>
+<script>
+  // 즉각실행함수로 핵심 코드를 지키면서 필요한 초기화를 자동진행한다.
+  (function () {
+    // new 키워드 없애기 (자바 : 팩토리객체)
+    const $ = function (hwSel) {
+      return new sjDom(hwSel);
+    };
+
+    // 클래스
+    const sjDom = function (hwSel) {
+      // 1. 선택한 모든 element를 가져온다.
+      //   지역변수로 일시 활용, 생성된 객체에는 남지 않음.
+      var elems = document.querySelectorAll(hwSel);
+
+      // 2. element개수를 저장한다.
+      this.length = elems.length; // 속성 추가방식
+
+      // 3. 생성되는 객체에 옮겨담는다.
+      for (let i = 0; i < this.length; i++) {
+        this[i] = elems[i];
+      }
+
+      // 4. 옮겨담은 element 가진 객체를 반환한다.
+      return this;
+    };
+
+    // 공유메소드
+    sjDom.prototype.insa = function () {
+      alert("난 공유 메소드얌.");
+    };
+
+    // 전역변수 $에 내부 지역변수 $를 할당한다.
+    window.$ = $;
+
+    // 전역변수 $에서 공유메소드를 만들 수 있다.(지역변수 $ -> 전역변수 $ 공유)
+    // 따라서 사용자들이 본인의 메소드를 추가할 수 있다.
+    // = jQuery 플러그인
+    $.fn = sjDom.prototype; // 외부에서 플러그인 추가가 가능해지도록 해주는 코드
+  })();
+
+  // 핵심 메소드 몇개만 만들어 봅시당. (callback 이해 필수!!)
+  // [html]
+  $.fn.html = function (pArg) {
+    // 매개변수가 안 넘어 왔을 때 ==> 읽기, 쓰기
+    if (!pArg) {
+      return this[0].innerHTML; // this : 생성된 객체의 인스턴스
+    }
+    // 매개변수가 문자열일 때 ==> 매개변수 문자열일 대, 전부쓰기
+    if (typeof pArg == "string") {
+      for (let i = 0; i < this.length; i++) {
+        this[i].innerHTML = pArg;
+      }
+      return this; // 메소드 체이닝
+    }
+    // 매개변수가 함수(콜백)일 때 ==> 선택적쓰기
+    if (typeof pArg == "function") {
+      for (let i = 0; i < this.length; i++) {
+        // this 값을 제어하기 위해서 call 을 사용한다.
+        // (this를 가리키는 객체, 매개변수1, 매개견수2)
+        this[i].innerHTML = pArg.call(this[i], i, this[i].innerHTML);
+      }
+      return this; // 메소드 체이닝
+    }
+  };
+
+  // 매개변수 콜백사용법
+  let hwObj = $(".hwo");
+  hwObj
+    .html(function (pIndex, pVal) {
+      console.log("체킁 this ", this); // ?? window NG, 선택된 각각의 element
+
+      // 첫번째 선택된 것만 바꾸깅
+      if (pIndex == 1) {
+        return `<h1>${pVal} 만만세</h1>`;
+      }
+      alert(`체킁 ${pIndex} ${pVal}`);
+      return pVal; // 원래 가지고 있던 값을 반환한다.
+    })
+    .html(function (pIndex, pVal) {
+      // 메소드 체이닝 이용
+      if (pVal == "준") {
+        return `<h2>${pVal}${pVal}${pVal}${pVal}</h2>`;
+      }
+      return pVal;
+    });
+
+  // 매개변수가 문자열일 때
+  //   hwObj.html("<h1>안농 난 석준</h1>");
+  //   alert(hwObj.html());
+
+  //   let sjObj = $(".sjo");
+  //   sjObj.html("<h3>난 혜원아닌뎅</h3>");
+  //   alert(sjObj.html());
+
+  //   hwObj[1].innerHTML = "<h1>오늘 호세 안장?</h1>";
+</script>

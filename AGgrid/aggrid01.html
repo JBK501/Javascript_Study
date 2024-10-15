@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Ag-Grid 시작 예제</title>
+    <script src="https://cdn.jsdelivr.net/npm/ag-grid-community/dist/ag-grid-community.min.js"></script>
+  </head>
+
+  <body>
+    <h1>지금은 뉴진스 시대</h1>
+    <!-- 테마는  -->
+    <div
+      id="myGrid"
+      style="height: 250px; width: 600px"
+      class="ag-theme-quartz-dark"
+    ></div>
+    <script>
+      // 샘플 ROW 데이타 정의, DB Select의 1줄 Row들의 모임 list가 될거시당
+      const rowData = [
+        { name: "민지", birth: "2004-05-07", nationality: "대한민국" },
+        { name: "하니", birth: "2004-10-06", nationality: "호주|베트남" },
+        { name: "다니엘", birth: "2005-04-11", nationality: "호주|한국" },
+        { name: "해린", birth: "2006-05-15", nationality: "대한민국" },
+        { name: "혜인", birth: "2008-04-21", nationality: "대한민국" },
+      ];
+
+      // 통합 설정 객체, 아주 많은 속성들이 제공됨(일단 몇개만)
+      const gridOptions = {
+        rowData: rowData,
+        columnDefs: [
+          // 컬럼 정의
+          { field: "name", headerName: "승환" },
+          { field: "birth", headerName: "생일" },
+          { field: "nationality", headerName: "국적" },
+        ],
+        // 모든 컬럼에 공통적으로 주고 싶은 속성
+        defaultColDef: {
+          filter: true,
+        },
+        autoSizeStrategy: {
+          // 자동사이즈정책
+          type: "fitGridWidth", // 그리드넓이기준으로
+          defaultMinWidth: 100, // 컬럼 최소사이즈
+        },
+        rowHeight: 40, // row 높이지정
+      };
+
+      const gridDiv = document.querySelector("#myGrid");
+      //  new agGrid.Grid(gridDiv, gridOptions);  // deprecated
+      const gridApi = agGrid.createGrid(gridDiv, gridOptions);
+    </script>
+  </body>
+</html>

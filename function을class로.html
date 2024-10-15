@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<meta charset="UTF-8" />
+<script>
+  // function 키워드를 class 의미로 쓴다 -> 그룹 class
+  function Group(pName, pMembers) {
+    this.name = pName;
+    this.members = pMembers;
+    this.getName = function () {
+      return this.name;
+    };
+
+    // function 키워드를 class 의미로 쓸 때는 아래 라인이 생략되어 있다고 생각할 것
+    // 곧 만든 객체를 내보낸다는 의미(semantics)
+    return this;
+  }
+
+  // 멤버 class
+  function Member(pName, pAge, pGender, pRoles) {
+    this.name = pName; // 속성 추가
+    this.age = pAge; // 속성 추가
+    this.gender = pGender; // 속성 추가
+    this.roles = pRoles; // 속성 추가
+    this.getRoles = function () {
+      // 메소드 추가
+      return this.roles;
+    };
+    this.addRole = function (pRole) {
+      // 메소드 추가
+      this.roles.push(pRole);
+    };
+
+    return this;
+  }
+
+  // 멤버 생성
+  const Roze = new Member("로제", 26, "female", ["메인보컬", "리드댄서"]);
+  const Jenni = new Member("제니", 27, "female", ["메인래퍼", "리드보컬"]);
+  const Risa = new Member("리사", 26, "female", [
+    "메인댄서",
+    "리드래퍼",
+    "서브보컬",
+  ]);
+  const Jisu = new Member("지수", 28, "female", ["리드보컬"]);
+
+  const BlackPink = new Group("블랙핑크", [Roze, Jenni, Risa, Jisu]);
+
+  console.log("체킁1: ", BlackPink);
+  console.log("체킁2: ", BlackPink.members[0]);
+  console.log("체킁3: ", BlackPink.members[0].getRoles());
+</script>

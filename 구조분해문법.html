@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<meta charset="UTF-8" />
+<script>
+  const songlist = [
+    { singer: "로제", title: "Gone" },
+    { singer: "제니", title: "Sole" },
+  ];
+
+  const blackPink = {
+    brand: "블랙핑크",
+    members: ["로제", "제니", "리사", "지수"],
+    songs: songlist,
+  };
+
+  /* 객체(Object)에서의 구조분해 */
+  // { singer: "로제", title: "Gone" } 에서 title 속성값만 title변수로 받기
+  let { title } = songlist[0];
+  alert("title : " + title);
+
+  let { songs, members } = blackPink;
+  console.log("songs", songs);
+  console.log("members", members);
+
+  /* 배열에서 구조분해 */
+  let [rozi, ...others] = blackPink.members;
+  console.log("rozi", rozi);
+  console.log("others", others);
+</script>

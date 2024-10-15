@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <input type="text" id="jmTxt" value="호셍" /> <br />
+    <button onclick="fOpen()">새창열기</button> <br />
+    <button onclick="fNewClose()">새창 닫기</button>
+  </body>
+  <script>
+    function fNewClose() {
+      if (!newWin) {
+        newWin.close();
+        newWin = null;
+      }
+    }
+
+    let newWin = null;
+    function fOpen() {
+      //   window.open("url", "이름", "옵션");
+      newWin = window.open(
+        "jm.html",
+        "jm",
+        "width=400,height=300,left=50,top=50"
+      );
+    }
+  </script>
+</html>

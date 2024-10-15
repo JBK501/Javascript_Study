@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #fTemp {
+        border: 5px solid blueviolet;
+        display: none; /* 초반에 감춘다. */
+      }
+    </style>
+  </head>
+  <body>
+    <h1>html 템플릿 사용 -> 아주 유용</h1>
+    <button onclick="fAddFr()">친구추가</button>
+    <div id="fTemp">
+      이름 : <input type="text" name="" id="fname" /><br />
+      <button onclick="fRevFr(this)">X</button> <br />
+      성별 <br />
+      남 : <input type="checkbox" name="fsb" value="male" /> <br />
+      여 :<input type="checkbox" name="fsb" value="fmale" /> <br />
+      취미 <br />
+      <select id="fhobby">
+        <option value="dev">개발</option>
+        <option value="eng">엔지니어</option>
+        <option value="ent">엔터테이너</option>
+      </select>
+      사진
+      <input type="file" id="fsajin" />
+    </div>
+
+    <!--친구 추가 영역-->
+    <div id="frlist" style="border: 1px solid black"></div>
+
+    <!-- 전송  -->
+    <button onclick="fsend()">전송(JSON 형식 만들기)</button>
+
+    <!-- ☆ 파일이 있을 때 전송 -->
+    <button onclick="fsend2()">전송(file 이 있을 대)</button>
+  </body>
+  <script>
+    // 엘리먼트 복붙 로직
+    const fTemp = document.querySelector("#fTemp");
+    const frlist = document.querySelector("#frlist");
+    function fAddFr() {
+      let fTempClone = fTemp.cloneNode(true); // element 복사
+      fTempClone.style.display = "block"; // 직관적으로 소스를 보여줌으로써 가독성을 높이는 코드 (원래 display : none)
+      frlist.appendChild(fTempClone); // 복사한 노드를 붙어넣는다.
+    }
+
+    // 엘리먼트 삭제 로직
+    function fRevFr(pThis) {
+      pThis.parentElement.remove(); // X 버튼의 부모를 삭제함.
+    }
+
+    // 데이터 전송 로직
+    function fsend() {
+      //1. 모든 태그를 가져온다.
+      let frs = frlist.querySelectorAll("#fTemp");
+      // element가 없을 때
+      if (!frs.length) {
+        alert("너 친구 없징!~~ ㅠㅠ");
+        return;
+      }
+
+      // 2. 가져온 태그의 하위 요소들을, 객체 형식으로 배열에 저장한다.
+      const friendList = [];
+      for (let i = 0; i < frs.length; i++) {
+        // 서버 사이드 VO 속성명과 맞춰주는게 좋다.
+        let friend = {
+          name: frs[i].querySelector("#fname").value,
+          sb: frs[i].querySelectorAll("[name=fsb]:checked")[0].value,
+          hobby: frs[i].querySelector("#fhobby").value,
+        };
+        friendList.push(friend);
+      }
+      console.log("최종확인 : ", friendList);
+    }
+
+    // 데이터 전송시 파일이 포함되어 있는 경우 로직
+    // 파일이 포함되었고, ajax로 전송해야 한다면 무조건 FormData가 필요하다.
+    function fsend2() {
+      let frs = frlist.querySelectorAll("#fTemp");
+
+      // 스크립트로 만드는 form-date 는 무조건 "multipart/form-data" 다.
+      let formData = new FormData();
+      for (let i = 0; i < frs.length; i++) {
+        formData.append("name", frs[i].querySelector("#fname").value);
+        formData.append(
+          "sb",
+          frs[i].querySelectorAll("[name=fsb]:checked")[0].value
+        );
+        formData.append("hobby", frs[i].querySelector("#fhobby").value);
+
+        // 파일추가, 만약 multiple이면 반복문 필요
+        formData.append("mfile", frs[i].querySelector("#fsajin").files[0]);
+      }
+
+      // formData 정보 체크
+      for (let [key, val] of formData) {
+        console.log("체킁", key, val);
+      }
+    }
+  </script>
+</html>

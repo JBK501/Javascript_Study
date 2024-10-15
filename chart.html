@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <!--차트크기는 부모 사이즈를 조절해야 한다.-->
+    <div style="width: 600px">
+      <canvas id="myChart"></canvas>
+    </div>
+
+    <input type="text" id="ejTxt" value="30" />
+    <button onclick="fReDraw()">값 바꾸기</button>
+  </body>
+  <script>
+    const ejTxt = document.querySelector("#ejTxt");
+
+    // 임의 데이터 값을 가져오는 함수 (나중에 비동기로 JSON데이터를 가져오면 됨)
+    function fRanData() {
+      const ranArr = []; // 빈 배열 생성
+      for (let i = 1; i <= 6; i++) {
+        ranArr.push(Math.random() * 50 + 50);
+      }
+      return ranArr;
+    }
+
+    // 실시간 데이터를 반영하는 함수 (나중에 settimeout으로 계속 실행하면 될듯함.)
+    function fReDraw() {
+      ejCt.data.labels = ["1월", "2월", "3월", "4월", "5월", "6월"];
+
+      // 실시간 반영된 변수를 가져와서 저장한다.
+      ejCt.data.datasets[0].data = fRanData();
+      ejCt.data.datasets[1].data = fRanData();
+      ejCt.update(); // 랜더링한다.
+      setTimeout(fReDraw, 500); // 실시간 데이터 반영
+    }
+
+    // json으로 데이터 받아와서 처리하면 될 듯함.
+    const y2022 = {
+      label: "2022년 매출",
+      data: [12, 19, 3, 5, 2, 3],
+      borderWidth: 1,
+    };
+
+    const y2023 = {
+      label: "2023년 매출",
+      data: [22, 29, 13, 15, 12, 13],
+      borderWidth: 1,
+    };
+
+    // chart.js
+    const ctx = document.querySelector("#myChart");
+
+    const ejCt = new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+        datasets: [y2022, y2023],
+      },
+
+      // 축변경 외 사용(필요할 때마다 검색해서 사용할 것)
+      options: {
+        indexAxis: "y",
+        scales: {
+          x: {
+            beginAtZero: true,
+          },
+        },
+      },
+    });
+  </script>
+</html>

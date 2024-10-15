@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <input type="text" tabindex="1" /><br />
+    <input type="text" tabindex="4" /><br />
+    <input type="text" tabindex="3" /><br />
+    <input type="text" tabindex="5" /><br />
+    <input type="text" tabindex="2" /><br />
+
+    <div tabindex="0" onkeydown="fEJ()" style="border: 1px solid pink">
+      은주 짱!
+    </div>
+
+    <input type="text" placeholder="키프레스" onkeypress="fCK()" />
+    <input type="text" placeholder="키다운" onkeydown="fCK2()" />
+  </body>
+  <script>
+
+    function fEJ() {
+        alert("나는 은주당!, 밉당 도연");
+    }
+
+    function fCK2() {
+      alert(event.keyCode);
+      if(event.keyCode )
+    }
+
+    function fCK() {
+      alert(event.key);
+    }
+  </script>
+</html>

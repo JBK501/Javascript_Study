@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function cal(pOp) {
+        if (pOp == "+") {
+          return function (pA, pB) {
+            return pA + pB;
+          };
+        }
+
+        if (pOp == "-") {
+          return function (pA, pB) {
+            return pA - pB;
+          };
+        }
+
+        if (pOp == "X") {
+          return function (pA, pB) {
+            return pA * pB;
+          };
+        }
+
+        if (pOp == "/") {
+          return function (pA, pB) {
+            return pA / pB;
+          };
+        }
+      }
+
+      alert(cal("+")(3, cal("X")(3, 3)));
+
+      /*
+      function fCk2() {
+        return function () {
+          return function (pA1, pA2) {
+            return pA1 + pA2;
+          };
+        };
+      }
+
+      alert(fCk2()()(2, 5));
+      */
+
+      // function fYJ() {
+      //   alert("타켓 윤지");
+      // }
+
+      // function fCheck(pArg) {
+      //   /// pArg = fYJ(함수 포인터, 단순히 함수 이름)
+      //   alert("fCheck가 불렀넹");
+      //   pArg(); // fCheck 가 불린 뒤에 불린다고 해서 callback함수다.
+      // }
+
+      // // 콜백은 보통 개발자가 그때그때 필요한 함수를 만들어서 사용하는게 대부분이다.
+      // fCheck(() => {
+      //   alert("윤지 만만세");
+      // });
+
+      /*
+      function fCheck(pArg) {
+        /// pArg = fYJ(함수 포인터, 단순히 함수 이름)
+        alert("fCheck가 불렀넹");
+        pArg(); // fCheck 가 불린 뒤에 불린다고 해서 callback함수다.
+      }
+
+      fCheck(fYJ);
+      */
+
+      // let isYJ = "윤지";
+      // function 추은주() {
+      //   if (isYJ == "윤지") {
+      //     return "OK";
+      //   }
+      //   return "NG";
+
+      //   // alert("나 불렀엉???");
+      //   // return "배트맨";
+      //   //   if (isYJ == "윤지") {
+      //   //     retStr = "OK";
+      //   //   } else {
+      //   //     retStr = "NG";
+      //   //   }
+      //   //   return retStr;
+      // }
+
+      // alert(추은주());
+    </script>
+  </body>
+</html>

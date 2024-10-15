@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>터미네이터 OO 이미지 검색</h1>
+    <input type="text" id="schTxt" value="" />
+    <input type="button" value="검색" onclick="fSch()" />
+    <div id="disp"></div>
+  </body>
+  <script>
+    const preURL =
+      "https://www.flickr.com/services/feeds/photos_public.gne?tags=";
+    const postURL = "&format=json";
+
+    function fSch() {
+      let schWord = schTxt.value;
+      let schURL = `${preURL}${schWord}${postURL}`;
+      console.log("URL 확인 : ", schURL);
+
+      // 스크립트 태그 생성
+      let hwScript = document.createElement("script");
+      hwScript.src = schURL;
+      document.head.appendChild(hwScript);
+    }
+    const schTxt = document.querySelector("#schTxt");
+
+    const disp = document.querySelector("#disp");
+
+    function jsonFlickrFeed(pHW) {
+      disp.innerHTML = ""; // disp 안에걸 지움 ==> $("#disp").empty();
+      //$("#disp").html();
+
+      console.log(pHW);
+
+      let schLinks = pHW.items;
+      for (let i = 0; i < schLinks.length; i++) {
+        let imgLink = schLinks[i].media.m;
+        console.log(imgLink);
+
+        let hwImg = document.createElement("img"); // $("<img>")
+        hwImg.src = imgLink;
+        hwImg.width = 100;
+        hwImg.height = 100;
+        disp.appendChild(hwImg);
+      }
+    }
+  </script>
+  <!-- <script src="https://www.flickr.com/services/feeds/photos_public.gne?tags=dog&format=json"></script> -->
+</html>

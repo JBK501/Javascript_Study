@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <form action="" method="">
+      이름 :
+      <input type="text" name="jname" value="은주" required disabled /><br />
+      나이 :
+      <input
+        type="text"
+        name="jage"
+        value=""
+        pattern="[2-6]{1}[0-9]{1}"
+        required
+        autofocus
+      /><br />
+      <input type="submit" value="전송" />
+      <input type="button" value="전송 흉네" onclick="fSend()" />
+    </form>
+    <hr />
+    <form action="">
+      <select name="jsel" id="">
+        <option value="js">자바스크립트</option>
+        <option value="java">자바</option>
+        <option value="spring" selected>스프링</option>
+        <option value="oracle">오라클</option>
+        <option value="jsp">JSP</option>
+      </select>
+    </form>
+
+    <script>
+      // 폼 배열을 지원한다.
+      console.log(document.forms[1]);
+
+      // 전송 흉네 버튼
+      function fSend() {
+        // document.forms[0].submit(); // 전송하라
+        document.forms[0].requestSubmit(); // 전송 요청
+      }
+
+      // select 다루기
+      const jsel = document.querySelector("select[name=jsel]"); // 해당 표현법 기억해둘것!
+
+      // 선택된 값 읽기
+      //   alert(jsel.options[jsel.selectedIndex].value);
+      alert(jsel.value);
+
+      // 선택된 값을 바꾸는 방법
+      jsel.value = "java";
+
+      //   alert(document.forms[1].jsel.options[2].value); // value 식별값 (spring)
+      //   alert(document.forms[1].jsel.options[2].innerHTML); // value값 (스프링)
+    </script>
+  </body>
+</html>

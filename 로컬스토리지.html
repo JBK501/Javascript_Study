@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body></body>
+  <script>
+    // 기본 확인
+    // localStorage.setItem("친구1", "준수");
+    // localStorage.setItem("친구2", "석준");
+    // alert(localStorage.length);
+    // alert(localStorage.key(1)); // 잘 안씀! 필요한 경우가 별로없음.
+
+    // localStorage.setItem("친구1", "준수미웡"); // 같은 key값을 덮어쓴다.
+    // // localStorage.removeItem("친구1"); // 삭제
+    // // localStorage.clear(); // 무조건 전부 지우기
+
+    // 실제 사용방식
+    let hw = {
+      name: "혜원",
+      alias: "에너지",
+    };
+    localStorage.setItem("hw", JSON.stringify(hw));
+
+    let check = localStorage.getItem("hw");
+    // alert(typeof check); // string
+    // alert(check.name) // 사용불가 : 문자열이기 때문
+
+    // 문자열을 객체로 변환한다.
+    check = JSON.parse(check);
+    alert(check.name);
+  </script>
+</html>

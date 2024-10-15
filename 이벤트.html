@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <!-- 이벤트 등록법 1번 -->
+    <div id="r303">
+      <button data-name="주현주" data-my-name="장민" onclick="fEvt(this)">
+        눌렁
+      </button>
+      <!-- 이벤트 등록법 2번 -->
+      <button id="jmBtn">나 장민이얌</button>
+
+      <!--이벤트 등록법 3번-->
+      <button id="recBtn">권장버튼</button>
+    </div>
+    <script>
+      // 이벤트 등록법 3번
+      const recBtn = document.querySelector("#recBtn");
+      recBtn.addEventListener("click", function () {
+        alert("안 혜지");
+      });
+
+      // 이벤트 등록법 2번
+      const jmBtn = document.querySelector("#jmBtn");
+
+      const fJM = function () {
+        alert("체킁", event.target);
+      };
+
+      jmBtn.onclick = fJM;
+
+      // (중요!)기존 버튼의 이벤트를 덮어버린다.
+      jmBtn.onclick = function () {
+        alert("나 보규 만행?");
+        recBtn.addEventListener("click", function () {
+          alert("안 혜지");
+        });
+      };
+
+      // 이벤트 등록법 1번
+      function fEvt(pThis) {
+        console.log("체킁1 : ", pThis); // 현재 태그 가져오기
+        console.log("체킁2 : ", pThis.dataset.name); // html 데이터 가져오기
+        console.log("체킁3 : ", pThis.dataset.myName); // html 데이터 가져오기 (camel case)
+        console.log("체킁4 :", pThis.parentElement); // 부모태그 찾기
+        console.log("체킁5 :", pThis.closest("div")); // 중요!!! 바깥으로 뻗어서 첫번째로 만나는 div 태그를 찾아라.
+
+        alert("나 눌렀닝?");
+      }
+    </script>
+  </body>
+</html>
