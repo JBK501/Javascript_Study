@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<meta charset="UTF-8" />
+<script>
+  const localStorageUtil = {}; // 네임스페이스용 빈 객체
+
+  // 저장 OR 덮어쓰기 메소드
+  localStorageUtil.save = function (pKey, pVal) {
+    // JSON.stringify는 문자열, 숫자, 불린에 적용해도 문자열로 변경한다.
+    localStorage.setItem(pKey, JSON.stringify(pVal));
+  };
+
+  // 읽기 메소드
+  localStorageUtil.read = function (pKey) {
+    let rslt;
+    try {
+      rslt = JSON.parse(localStorage.getItem(pKey));
+    } catch (error) {
+      // JSON 형식이 아닌 데이터를 바꾸었을 때 error 발생
+      rslt = localStorage.getItem(pKey);
+    }
+    return rslt;
+  };
+
+  // 지우기 메소드
+  localStorageUtil.delete = function (pKey) {
+    localStorage.removeItem(pKey);
+  };
+
+  // 모두 지우기 메소드
+  localStorageUtil.deleteAll = function () {
+    localStorage.clear();
+  };
+
+  // 테스트
+  // localStorageUtil.save("array", ["1", "2", "3"]);
+  // localStorageUtil.save("obj", { name: "제니", age: 27 });
+  // localStorageUtil.save("merong", "hello");
+  // localStorageUtil.save("number", 272);
+  // localStorageUtil.save("boolean", true);
+
+  // console.log(localStorageUtil.read("array"));
+  // console.log(localStorageUtil.read("obj"));
+  // console.log(localStorageUtil.read("merong"));
+  // console.log(localStorageUtil.read("number"));
+  // console.log(localStorageUtil.read("boolean"));
+
+  // localStorageUtil.delete("merong");
+
+  // localStorageUtil.deleteAll();
+
+  // 더미 데이터 만들기 (IT 게시판)
+  // 글번호, 작성자, 제목, 내용, 날짜, 카테고리
+  const tableName = "board"; // localStorage 키값
+  const cateStr = '["HTML","CSS","JS","JAVA","ORACLE"]';
+
+  // 랜덤 카테로리 배열 리턴
+  const ranCat = function () {
+    const category = JSON.parse(cateStr);
+    let rslt = [];
+    let ranLoop = 2 + Math.floor(Math.random() * (category.length - 2));
+
+    for (let i = 0; i < ranLoop; i++) {
+      let ransu = Math.floor(Math.random() * category.length);
+      rslt.push(category[ransu]);
+      category.splice(ransu, 1);
+    }
+    return rslt;
+  };
+
+  // 더미 데이터 생성
+  let now = new Date();
+  let dummyData = [];
+  for (let i = 1; i <= 72; i++) {
+    let newPost = {};
+    newPost.num = i;
+    newPost.writer = "작성자 " + i;
+    newPost.title = "제목 " + i;
+    newPost.content = "내용 " + i;
+    now.setDate(i);
+    newPost.postDate = now.toLocaleString();
+    newPost.cate = ranCat();
+    dummyData.push(newPost);
+  }
+
+  localStorageUtil.save(tableName, dummyData);
+
+  // 4번째 인덱스의 writer, content값 변경하기
+  let readBoard = localStorageUtil.read(tableName);
+  for (let i = 0; i < readBoard.length; i++) {
+    if (i == 4) {
+      readBoard[i].writer = "정보규";
+      readBoard[i].content = "자바스크립트 너무 어려워용..";
+      break;
+    }
+  }
+
+  localStorageUtil.save(tableName, readBoard);
+</script>
