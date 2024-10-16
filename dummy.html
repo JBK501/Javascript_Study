@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<meta charset="UTF-8" />
+<script src="./ranUtil.js"></script>
+<script>
+  const tblName = "JBKBoard";
+  var dummyArr = [];
+
+  for (let i = 1; i <= 108; i++) {
+    let gul = {
+      num: i,
+      title: RanUtil.ranTitle(),
+      writer: RanUtil.ranFullName(),
+      cont: RanUtil.ranContent(),
+      cate: RanUtil.ranArrLength(["js", "java", "oracle", "html", "css"], 2, 3),
+      date: RanUtil.ranDate(),
+    };
+    dummyArr.push(gul);
+  }
+
+  localStorage.setItem(tblName, JSON.stringify(dummyArr));
+</script>

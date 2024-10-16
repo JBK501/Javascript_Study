@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<meta charset="UTF-8" />
+<script src="./jsp.js"></script>
+<script>
+  let num = request.getParameter("n_num");
+  let title = request.getParameter("n_title");
+  let cont = request.getParameter("n_cont");
+  let cate = request.getParameterValues("n_cate");
+
+  const tblName = "JBKBoard";
+
+  // 로컬스토리지에 데이터가 있다는 가정하에 작성함
+  let gulDatas = JSON.parse(localStorage.getItem(tblName));
+
+  // 데이터를 수정한다.
+  for (let i = 0; i < gulDatas.length; i++) {
+    if (gulDatas[i].num == num) {
+      gulDatas[i].title = title;
+      gulDatas[i].cont = cont;
+      gulDatas[i].cate = cate;
+      gulDatas[i].date = dateForm(new Date(), "-");
+      break;
+    }
+  }
+
+  // 로컬스토리지에 저장한다.(덮어쓰기)
+  localStorage.setItem(tblName, JSON.stringify(gulDatas));
+
+  alert("글이 잘 수정되었습니다!");
+  location.replace("list.html");
+</script>

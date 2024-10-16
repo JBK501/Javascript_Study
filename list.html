@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>JBK JS 게시판</title>
+    <link
+      rel="shortcut icon"
+      href="https://img.icons8.com/?size=512&id=42814&format=png"
+      type="image/x-icon"
+    />
+    <style>
+      #wrapper {
+        width: 750px;
+        margin: 20px auto; /* auto : 좌우 가운데 정렬*/
+        color: rgb(83, 0, 161);
+      }
+
+      #header {
+        border-bottom: 2px solid orange;
+        text-align: center;
+      }
+
+      #content {
+        height: 70vh; /* 브라우저 창 높이의 70%로 설정한다.*/
+        overflow: auto; /* 컨텐츠크기가 너무 커지면 스크롤바를 생성한다. */
+      }
+
+      #footer {
+        height: 10vh;
+        line-height: 200%; /* 텍스트 행간격을 기본글자 크기의 2배로 설정한다.*/
+        text-align: center;
+      }
+
+      #list,
+      #list th,
+      #list td {
+        border: 1px solid black;
+        text-align: center;
+      }
+
+      th {
+        background-color: orange;
+      }
+
+      table {
+        width: 100%;
+      }
+
+      #modalWin {
+        position: fixed;
+        width: 100vw;
+        height: 100vh;
+        left: 0px;
+        top: 0px;
+        z-index: 1000;
+        background-color: rgba(138, 43, 226, 0.9);
+        display: none;
+      }
+
+      #modalCont {
+        width: 400px;
+        height: 70%;
+        margin: 10% auto;
+        border: 3px solid black;
+        background-color: gray;
+        color: yellow;
+        text-align: center;
+      }
+
+      #menu {
+        width: 100%;
+        height: 10%;
+        text-align: right;
+      }
+
+      #close {
+        font-size: 2em;
+      }
+
+      .mark {
+        font-size: 3em;
+        color: blueviolet;
+      }
+    </style>
+  </head>
+  <body>
+    <!--모달창-->
+    <!-- 모달 모달  -->
+    <div id="modalWin">
+      <div id="modalCont">
+        <div id="menu">
+          <button id="close" onclick="fmodalClose()">X</button>
+        </div>
+        <div id="detail">
+          <form action="" method="get">
+            <input type="hidden" name="n_num" value="" />
+            <table>
+              <tr>
+                <td>제목</td>
+                <td><input type="text" name="n_title" value="" required /></td>
+              </tr>
+              <tr>
+                <td>글쓰니</td>
+                <td><input type="text" name="n_writer" value="" disabled /></td>
+              </tr>
+              <tr>
+                <td colspan="2">내용</td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  <textarea
+                    name="n_cont"
+                    cols="40"
+                    rows="10"
+                    required
+                  ></textarea>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2">관련언어(최소1개 MAX 3개까지 선택)</td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  HTML<input
+                    type="checkbox"
+                    name="n_cate"
+                    value="HTML"
+                    onclick="ckCnt(this)"
+                  />
+                  CSS<input
+                    type="checkbox"
+                    name="n_cate"
+                    value="CSS"
+                    onclick="ckCnt(this)"
+                  />
+                  JS<input
+                    type="checkbox"
+                    name="n_cate"
+                    value="JS"
+                    onclick="ckCnt(this)"
+                  />
+                  JAVA<input
+                    type="checkbox"
+                    name="n_cate"
+                    value="JAVA"
+                    onclick="ckCnt(this)"
+                  />
+                  ORACLE<input
+                    type="checkbox"
+                    name="n_cate"
+                    value="ORACLE"
+                    onclick="ckCnt(this)"
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  <br />
+                  <button onclick="fPreSub('modify')">수정</button>&nbsp;&nbsp;
+                  <button onclick="fPreSub('delete')">삭제</button>
+                </td>
+              </tr>
+            </table>
+          </form>
+          <div>
+            <img
+              src="https://cdn.pixabay.com/photo/2019/11/28/21/31/lynx-4660096_1280.jpg"
+              style="width: 100%; height: 150px"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--화면 레이아웃-->
+    <div id="wrapper">
+      <div id="header">
+        <h1>어리둥절 JS 께시판</h1>
+      </div>
+      <div id="content"></div>
+      <div id="footer">
+        <h1>&copy;JBK Company Since 2000</h1>
+      </div>
+    </div>
+    <script src="./jsp.js"></script>
+    <script>
+      // LocalStorage key값
+      const tblName = "JBKBoard";
+
+      let loDatas = JSON.parse(localStorage.getItem(tblName));
+
+      /* 페이징 처리를 위한 산수*/
+      let totalGulCnt = loDatas.length;
+
+      // 페이지당 레코드 수
+      const cntPerPage = 10;
+
+      // 계산되는 페이지 수, 108개가 있다면 11페이지가 나와야 함(나머지가 있다면 올림).
+      let pageCnt = Math.ceil(totalGulCnt / cntPerPage);
+
+      // 현재 페이지 정보, page=숫자 형태로 넘겨받는다.
+      let page = request.getParameter("page");
+      if (!page) {
+        // 넘겨받은 페이지가 없다면
+        page = 1; // 1페이지로 지정한다.
+      }
+
+      // 페이지 별 시작글 index와 마지막 글 index
+      /*
+            page        startIndex      endIndex                개수
+            1               0               9                    10
+            2               10              19                   10
+            11              100             109(실제 107)         9
+      */
+
+      let startGulIndex = (page - 1) * cntPerPage;
+      let endGulIndex = startGulIndex + cntPerPage - 1;
+
+      // 글의 존재여부 상관없이 계산한 endGulIndex가 실재 존재하는 글의 index보다 큰 경우에 추가처리가 필요함.
+      // 마지막 index > 토탈게시글 index
+      if (endGulIndex > totalGulCnt - 1) {
+        endGulIndex = totalGulCnt - 1;
+      }
+
+      //전역 변수
+      const myModalWin = document.querySelector("#modalWin");
+      const myHeader = document.querySelector("#header");
+      const myContent = document.querySelector("#content");
+      const myFooter = document.querySelector("#footer");
+      const myTitle = document.querySelector("[name=n_title]");
+      const myWriter = document.querySelector("[name=n_writer]");
+      const myCont = document.querySelector("[name=n_cont]");
+      const myCate = document.querySelectorAll("[name=n_cate]");
+
+      // 새글작성 태그
+      const writeLink = `
+            <div id="links" style="text-align:right">
+                <a href="write.html"><button>새글 쓰기</button></a>
+            </div>
+      `;
+
+      // 게시글 리스트 출력함수
+      function gulList() {
+        let tblStr = `<table id="list"><tbody>`;
+        tblStr += `<tr><th>글번</th><th>제목</th><th>지으니</th><th>관련</th><th>날짜</th></tr>`;
+        // 현재 페이지의 시작 index부터 마지막 index만큼 반복한다
+        for (let i = startGulIndex; i <= endGulIndex; i++) {
+          // 테이블 문자열에 게시글을 추가한다.
+          let gul = loDatas[i];
+          tblStr += `<tr>`;
+          tblStr += `<td>${gul.num}</td>`;
+          tblStr += `<td><a href="#" onclick="fmodalOpen('${gul.num}')">${gul.title}</a></td>`;
+          tblStr += `<td>${gul.writer}</td>`;
+          tblStr += `<td>${gul.cate}</td>`;
+          tblStr += `<td>${gul.date}</td>`;
+          tblStr += `<tr>`;
+        }
+        tblStr += `</tbody></table>`;
+
+        let pageStr = "<br><br>";
+        for (let i = 1; i <= pageCnt; i++) {
+          if (page == i)
+            pageStr += `<a class="mark" href="list.html?page=${i}">${i}</a>&nbsp;&nbsp;&nbsp;`;
+          else
+            pageStr += `<a href="list.html?page=${i}">${i}</a>&nbsp;&nbsp;&nbsp;`;
+        }
+        tblStr += pageStr;
+        tblStr += writeLink;
+        myContent.innerHTML = tblStr;
+      }
+
+      // 모든 태그 해석이 끝나면 DOMContentLoaded 실행
+      document.addEventListener("DOMContentLoaded", () => {
+        gulList();
+      });
+
+      /* 수정 / 삭제 처리 */
+      const maxCnt = 3;
+      let totalCnt = 0;
+      const myForm = document.forms[0];
+      let modOrDel = ""; // 수정 / 삭제 여부
+
+      // 수정이나 삭제버튼 클릭시 오더정보를 설정하는 메소드
+      const fPreSub = function (pSet) {
+        modOrDel = pSet;
+      };
+
+      // 카테고리 선택개수를 체크하는 함수
+      const ckCnt = function (pThis) {
+        if (pThis.checked) totalCnt++;
+        else totalCnt--;
+
+        if (totalCnt > maxCnt) {
+          alert("3개 까지만 체크 가능합니다!");
+          pThis.checked = !1;
+          totalCnt--;
+        }
+      };
+
+      myForm.onsubmit = function () {
+        alert(`${modOrDel}을 누르셨군요!`);
+        event.preventDefault();
+        let ckBoxes = document.querySelectorAll("[name=n_cate]:checked");
+        if (ckBoxes.length < 2) {
+          alert("최소 2개는 선택하셔야 해요!");
+        } else {
+          myForm.action = `${modOrDel}_action.html`;
+          myForm.submit();
+        }
+      };
+
+      /* 모달 처리 */
+
+      // 모달열기
+      const fmodalOpen = function (pNum) {
+        event.preventDefault(); // a 태그 링크 이동을 막는다.
+        document.querySelector("[name=n_num]").value = pNum;
+        for (let i = 0; i < loDatas.length; i++) {
+          if (loDatas[i].num == pNum) {
+            myTitle.value = loDatas[i].title;
+            myWriter.value = loDatas[i].writer;
+            myCont.value = loDatas[i].cont;
+            let cates = loDatas[i].cate;
+            totalCnt = cates.length;
+            // console.log(totalCnt);
+            for (let j = 0; j < cates.length; j++) {
+              //   console.log(cates[j]);
+              document.querySelector(
+                `[type=checkbox][value=${cates[j].toUpperCase()}]`
+              ).checked = true;
+            }
+            break;
+          }
+        }
+        myModalWin.style.display = "block";
+      };
+
+      // 모달닫기
+      const fmodalClose = function () {
+        myModalWin.style.display = "none";
+      };
+    </script>
+  </body>
+</html>

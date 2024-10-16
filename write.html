@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>E7E JS 께시판</title>
+    <link
+      rel="shortcut icon"
+      href="https://img.icons8.com/?size=512&id=42814&format=png"
+      type="image/x-icon"
+    />
+    <style>
+      #wrapper {
+        width: 520px;
+        margin: 20px auto;
+        color: rgb(83, 0, 161);
+      }
+      #line {
+        width: 65%;
+        height: 10px;
+        background-color: orange;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="wrapper">
+      <h1>어리둥절 JS 께시판</h1>
+      <div id="line"></div>
+      <br />
+      <form action="write_action.html" method="get">
+        <table>
+          <tr>
+            <td>제목</td>
+            <td>
+              <input
+                type="text"
+                name="n_title"
+                value="aaa"
+                autofocus
+                required
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>글쓰니</td>
+            <td><input type="text" name="n_writer" value="bbb" required /></td>
+          </tr>
+          <tr>
+            <td colspan="2">내용</td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <textarea name="n_cont" cols="40" rows="10">ccc</textarea>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">관련언어(최소1개 MAX 3개까지 선택)</td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              HTML<input
+                type="checkbox"
+                name="n_cate"
+                value="HTML"
+                onclick="ckCnt(this)"
+              />
+              CSS<input
+                type="checkbox"
+                name="n_cate"
+                value="CSS"
+                onclick="ckCnt(this)"
+              />
+              JS<input
+                type="checkbox"
+                name="n_cate"
+                value="JS"
+                onclick="ckCnt(this)"
+              />
+              JAVA<input
+                type="checkbox"
+                name="n_cate"
+                value="JAVA"
+                onclick="ckCnt(this)"
+              />
+              ORACLE<input
+                type="checkbox"
+                name="n_cate"
+                value="ORACLE"
+                onclick="ckCnt(this)"
+              />
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <br />
+              <button>쩐쏭</button>&nbsp;&nbsp;
+              <button type="reset">따시</button>
+            </td>
+          </tr>
+        </table>
+      </form>
+    </div>
+    <script>
+      // Global variables
+      const maxCnt = 3;
+      let totalCnt = 0;
+      const myForm = document.forms[0];
+
+      // Global functions
+      const ckCnt = function (pThis) {
+        if (pThis.checked) {
+          totalCnt++;
+        } else {
+          totalCnt--;
+        }
+        if (totalCnt > maxCnt) {
+          alert("3개 까지망");
+          pThis.checked = !1;
+          totalCnt--;
+        }
+      };
+
+      myForm.onsubmit = function () {
+        event.preventDefault();
+        ckboxs = document.querySelectorAll("[name=n_cate]:checked");
+        if (ckboxs.length < 2) {
+          alert("최소 2개는 선택하셔야 해용");
+        } else {
+          myForm.submit();
+        }
+      };
+    </script>
+  </body>
+</html>

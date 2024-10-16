@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<meta charset="UTF-8" />
+<script>
+  // 로또 생성 프로그램
+
+  // 랜덤번호를 생성하는 메소드
+  const makeRandomNumber = function (pStart, pEnd) {
+    return pStart + Math.floor(Math.random() * (pEnd - pStart));
+  };
+
+  // 중복숫자 포함여부를 체크하는 메소드
+  const isInclude = function (pArr, pVal) {
+    for (let i = 0; i < pArr.length; i++) {
+      if (pArr[i] == pVal) return true;
+    }
+    return false;
+  };
+
+  const makeLotto = function () {
+    const lottoNumbers = [];
+
+    for (;;) {
+      // 종료조건
+      if (lottoNumbers.length == 6) {
+        return lottoNumbers.sort((a, b) => a - b);
+      }
+
+      // 1~45 숫자를 뽑는다.
+      let ranNum = makeRandomNumber(1, 45);
+
+      // 뽑은 숫자가 로또배열에 없다면, 로또배열에 추가한다.
+      if (!isInclude(lottoNumbers, ranNum)) lottoNumbers.push(ranNum);
+    }
+  };
+
+  // 테스트
+  const loopCnt = 5;
+  for (let i = 1; i <= loopCnt; i++) {
+    console.log(`${i}번째 결과  ${lotto()}`);
+  }
+</script>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <style>
+      #modalWin {
+        position: fixed;
+        width: 100vw;
+        height: 100vh;
+        left: 0px;
+        top: 0px;
+        z-index: 1000;
+        /*  background-color: blueviolet; */
+        background-color: rgba(138, 43, 226, 0.5);
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="modalWin"></div>
+    <button onclick="fmodal()">모달창열기</button>
+    <script>
+      const myModalWin = document.querySelector("#modalWin");
+      const fmodal = function () {
+        myModalWin.style.display = "block";
+      };
+    </script>
+  </body>
+</html>
