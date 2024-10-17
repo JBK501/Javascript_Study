@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Just 큐브</title>
+    <style>
+      * {
+        box-sizing: border-box; /* 사이즈에 border를 포함하라는 지정 */
+      }
+
+      .scene {
+        width: 200px;
+        height: 200px;
+        margin: 180px;
+        perspective: 400px; /* camera와 떨어진 위치가 400px */
+      }
+
+      .cube {
+        width: 200px;
+        height: 200px;
+        position: relative;
+        transform-style: preserve-3d;
+        transform: translateZ(-100px) rotate3d(1, 1, 1, 45deg); /* x,y,z 축 그대로 각도만 45도 */
+      }
+
+      .cube__face {
+        position: absolute; /* position이 static이 아닌 상위 요소를 기준으로 요소를 배치함 (없다면 body기준배치) */
+        width: 200px;
+        height: 200px;
+        border: 2px solid black;
+        line-height: 200px;
+        font-size: 40px;
+        font-weight: bold;
+        color: white;
+        text-align: center;
+        backface-visibility: hidden;
+      }
+
+      /* 큐브 색 지정*/
+      .cube__face--front {
+        background: rgba(0, 255, 130, 0.7);
+      }
+      .cube__face--right {
+        background: rgba(60, 200, 100, 0.5);
+      }
+      .cube__face--back {
+        background: rgba(120, 180, 170, 0.6);
+      }
+      .cube__face--left {
+        background: rgba(180, 200, 200, 0.7);
+      }
+      .cube__face--top {
+        background: rgba(240, 250, 150, 0.5);
+      }
+      .cube__face--bottom {
+        background: rgba(200, 190, 50, 0.6);
+      }
+
+      /* 큐브 회전 */
+      /* 
+        transform:rotate -> 회전 개념
+        transform:translate -> 이동 개념
+      */
+      .cube__face--front {
+        transform: rotateY(0deg) translateZ(100px); /* translzteZ(100px) : z축 기준으로 100px 가깝게 배치함.*/
+      }
+      .cube__face--right {
+        transform: rotateY(90deg) translateZ(100px); /* y축이 돌아서 z축도 돔*/
+      }
+      .cube__face--back {
+        transform: rotateY(180deg) translateZ(100px); /* rotateY(180deg) 좌우 반전 */
+      }
+      .cube__face--left {
+        transform: rotateY(-90deg) translateZ(100px);
+      }
+      .cube__face--top {
+        transform: rotateX(90deg) translateZ(100px);
+      }
+      .cube__face--bottom {
+        transform: rotateX(-90deg) translateZ(100px);
+      }
+
+      #backMovie {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 밑바닥에 유튜브 동영상 깔기 -->
+    <div id="backMovie"></div>
+    <div class="scene">
+      <div class="cube">
+        <div class="cube__face cube__face--front">전</div>
+        <div class="cube__face cube__face--back">후</div>
+        <div class="cube__face cube__face--right">우</div>
+        <div class="cube__face cube__face--left">좌</div>
+        <div class="cube__face cube__face--top">상</div>
+        <div class="cube__face cube__face--bottom">하</div>
+      </div>
+    </div>
+    <script>
+      const signals = [
+        "c6rP-YP4c5I",
+        "VQtonf1fv_s",
+        "J3VZ78hWhQw",
+        "wH1KLiYD8vE",
+        "ko2Dub0-TzU",
+        "8YnCCsrrBXE",
+        "DhD7ddGQJzE",
+      ];
+      const movies = [];
+      const bpImgs = [
+        "https://pbs.twimg.com/media/E1zDSoQUUAIA5Z2.jpg",
+        "https://zzbang.dcinside.com/blackpink_temp.jpg",
+        "https://dimg.donga.com/wps/SPORTS/IMAGE/2021/05/24/107079720.1.jpg",
+        "https://thumb.mt.co.kr/06/2020/12/2020122822404367240_1.jpg/dims/optimize/",
+        "https://thumb.mtstarnews.com/06/2023/01/2023012910372689374_1.jpg/dims/optimize",
+        "https://image.ytn.co.kr/general/jpg/2022/0228/202202281325208959_d.jpg",
+      ];
+      for (let i = 0; i < signals.length; i++) {
+        let uIfr = "";
+        if (i == signals.length - 1) {
+          uIfr = `
+                  <iframe width="100%" height="100%"
+                      src="https://www.youtube.com/embed/${signals[i]}?autoplay=1&mute=1"
+                      title="Who are you? batman?"
+                      frameborder="0" allow="accelerometer; autoplay;
+                      clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen>
+                  </iframe>
+              `;
+        } else {
+          uIfr = `
+                  <iframe width="200" height="200"
+                      src="https://www.youtube.com/embed/${signals[i]}?autoplay=1&mute=1"
+                      title="Shakira - Try Everything (Official Video)"
+                      frameborder="0" allow="accelerometer; autoplay;
+                      clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen>
+                  </iframe>
+              `;
+        }
+        movies.push(uIfr);
+      }
+
+      // 백그라운드 동영상 돌리기
+      const myBackMovie = document.querySelector("#backMovie");
+      function fBackLoop() {
+        myBackMovie.innerHTML = movies[movies.length - 1];
+        setTimeout(fBackLoop, (3 * 60 + 33) * 1000);
+      }
+      fBackLoop();
+
+      // 큐브 돌리기
+      const v_scene = document.querySelector(".scene");
+      const v_cube = document.querySelector(".cube");
+      const v_cube1 = v_cube.cloneNode(true);
+      for (let i = 0; i < v_cube1.children.length; i++) {
+        v_cube1.children[i].innerHTML = movies[i];
+      }
+
+      const v_cube2 = v_cube.cloneNode(true);
+      for (let i = 0; i < v_cube2.children.length; i++) {
+        v_cube2.children[i].innerHTML = "";
+        let vImg = document.createElement("img");
+        vImg.src = bpImgs[i];
+        vImg.width = 195;
+        vImg.height = 195;
+        v_cube2.children[i].appendChild(vImg);
+      }
+
+      v_scene.appendChild(v_cube1);
+      v_scene.appendChild(v_cube2);
+      v_cube1.setAttribute("style", "left:350px;top:-150px");
+      v_cube2.setAttribute("style", "left:900px;top:-350px");
+      let v_deg = 0;
+
+      function f_rotate() {
+        const v_cubes = document.querySelectorAll(".cube");
+        v_deg = (v_deg % 360) + 3;
+
+        v_cubes[0].style.transform = "rotate3d(1,1,1," + v_deg + "deg)";
+        v_cubes[1].style.transform = "rotate3d(1,1,0," + v_deg + "deg)";
+        v_cubes[2].style.transform = "rotate3d(1,0,1," + v_deg + "deg)";
+        setTimeout(f_rotate, 100);
+      }
+
+      window.onload = function () {
+        f_rotate();
+      };
+    </script>
+  </body>
+</html>
