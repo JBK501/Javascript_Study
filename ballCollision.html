@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>공 튀기기</title>
+    <style>
+      #wrapper {
+        margin: 10px auto;
+        text-align: center;
+      }
+
+      #boundary {
+        position: relative;
+        margin: 0 auto;
+        width: 400px;
+        height: 500px;
+        border: 2px solid red;
+        background-image: url("https://img.marieclairekorea.com/2020/02/mck_5e56e0d39411b.jpg");
+        background-size: 100% 100%;
+      }
+
+      #ball {
+        background-image: url("https://img.hankyung.com/photo/202001/03.21612581.1.jpg");
+        background-size: 100px 100px;
+        position: absolute;
+        width: 100px;
+        height: 100px;
+        border: 1px solid yellowgreen;
+        border-radius: 50%;
+        background-color: blue;
+      }
+
+      #bar {
+        position: absolute;
+        width: 150px;
+        height: 30px;
+        top: 440px;
+        background-color: brown;
+        color: yellow;
+        font-weight: bolder;
+      }
+
+      #marker {
+        position: absolute;
+        width: 5px;
+        height: 5px;
+        background-color: red;
+      }
+
+      span {
+        font-size: 1.5em;
+      }
+
+      input[type="checkbox"] {
+        transform: scale(1.8);
+      }
+
+      h1 {
+        background-color: black;
+        color: yellow;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="wrapper">
+      <h1>좌우화살표 사용하세용!</h1>
+      <div id="boundary" tabindex="0" autofocus onkeydown="fKeyControl()">
+        <div id="marker"></div>
+        <div id="ball"></div>
+        <div id="bar">&copy; JBK BALL</div>
+      </div>
+      <input type="checkbox" value="auto" onclick="fAuto(this)" />&nbsp;<span
+        >AUTO</span
+      ><br />
+      <h1>화살표 안 먹으면, 마우스로 볼 수 있는 공간을 한 번 찍고 하세용~</h1>
+    </div>
+    <script>
+      // 자동모드 설정
+      let v_autoMode = false;
+      function fAuto(pThis) {
+        if (pThis.checked) v_autoMode = true;
+        else v_autoMode = false;
+      }
+
+      // DOM
+      const v_boundary = document.querySelector("#boundary");
+      const v_marker = document.querySelector("#marker");
+      const v_ball = document.querySelector("#ball");
+      const v_bar = document.querySelector("#bar");
+
+      // 움직이는 속도
+      let v_mvX = 10; // 좌우방향
+      let v_mvH = 10; // 상하방향
+
+      // 회전각
+      let v_deg = 0;
+      const ballSize = 100;
+      const boundaryWidth = 400;
+      const boundaryHeight = 500;
+
+      // 공 움직이는 메소드
+      function fMvBall() {
+        v_deg = (v_deg + 10) % 360;
+        v_ball.style.left = parseInt(v_ball.style.left) + v_mvX + "px";
+        v_ball.style.top = parseInt(v_ball.style.top) + v_mvH + "px";
+        v_ball.style.transfrom = `rotate(${v_deg}deg)`;
+
+        let v_ballLeft = parseInt(v_ball.style.left);
+        let v_ballRight = v_ballLeft + ballSize;
+        let v_ballTop = parseInt(v_ball.style.top);
+        let v_ballBottom = v_ballTop + ballSize;
+        let v_barLeft = parseInt(v_bar.style.left);
+        let v_barRight = v_barLeft + 150; // 150 : 오른쪽 벽에 떨어지게 준 값
+
+        // bar왼쪽좌표 + 75 = ball 왼쪽좌표 + 50 성립해야 중심이 같이 움직임
+        if (v_autoMode) {
+          let v_checkOver = parseInt(v_ball.style.left) - 25;
+          if (v_checkOver > 250) {
+            v_bar.style.left = "250px";
+          } else if (v_checkOver < 0) {
+            v_bar.style.left = "0px";
+          } else {
+            v_bar.style.left = v_checkOver + "px";
+          }
+        }
+
+        // 좌우 충돌
+        if (v_ballLeft < 0 || v_ballRight >= boundaryWidth) {
+          v_mvX = -v_mvX;
+        }
+
+        // 상하 충돌
+        if (v_ballTop <= 0 || v_ballBottom >= boundaryHeight) {
+          v_mvH = -v_mvH;
+        }
+
+        let v_botLimit = v_ballBottom >= v_barTop;
+        let v_leftRightLimit =
+          v_ballRight >= v_barLeft && v_ballLeft <= v_barRight;
+        v_marker.style.left = v_ballLeft + "px";
+        v_marker.style.top = v_ballTop + "px";
+
+        if (v_botLimit && v_leftRightLimit) {
+          if (v_mvX > 0) {
+            v_ball.style.transfrom = "skewX(-45deg)";
+          } else {
+            v_ball.style.transfrom = "skewX(45deg)";
+          }
+          v_mvH = -v_mvH;
+        }
+        setTimeout(fMvBall, 100);
+      }
+
+      // 화살표 좌우 키 컨트롤 메소드
+      function fKeyControl() {
+        let v_keyCode = event.keyCode;
+        let v_barLeft = parseInt(v_bar.style.left);
+        let v_barRight = v_barLeft + 150;
+        if (v_keyCode == 37) {
+          // 왼쪽 화살표를 클릭했을 때
+          if (v_barLeft > 0) {
+            v_bar.style.left = v_barLeft - 10 + "px";
+          }
+        }
+        if (v_keyCode == 39) {
+          // 오른쪽 화살표를 클릭했을 때
+          if (v_barRight < boundaryWidth) {
+            v_bar.style.left = v_barLeft + 10 + "px";
+          }
+        }
+      }
+
+      // 페이지 로딩 후, 초기값 세팅 후 볼 움직임 콜
+      let v_barTop;
+      window.onload = function () {
+        v_bar.style.left = Math.floor(Math.random() * 25) * 10 + "px";
+        v_bar.style.top = "450px";
+        v_ball.style.left = Math.floor(Math.random() * 30) * 10 + "px";
+        v_ball.style.top = "10px";
+        v_barTop = parseInt(v_bar.style.top);
+        fMvBall();
+      };
+    </script>
+  </body>
+</html>
