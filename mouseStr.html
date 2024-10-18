@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>마우스</title>
+  </head>
+  <body>
+    <script>
+      let backImgURL = "url('https://img1.daumcdn.net/thumb/R750x0/?";
+      backImgURL +=
+        "scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2";
+      backImgURL +=
+        "Fc8Ie13%2FbtslZnGZYMH%2FjSpkVSu45sx9WkynKetTB1%2Fimg.jpg')";
+
+      // 화면 전체영역과 같은 DIV를 생성한다.
+      const wrapDiv = document.createElement("div");
+      wrapDiv.setAttribute("id", "wrapper");
+      wrapDiv.style.width = "100vw";
+      wrapDiv.style.height = "100vh";
+      wrapDiv.style.backgroundImage = backImgURL;
+      wrapDiv.style.backgroundSize = "100% 100%";
+      wrapDiv.addEventListener("mousemove", mouseXY);
+      document.body.appendChild(wrapDiv);
+
+      // 전역변수 선언
+      let msgStr;
+      let x;
+      let y;
+      let xPos = [];
+      let yPos = [];
+      const xDist = 40;
+      const loopTime = 50;
+
+      // 랜덤 컬러를 생성하는 메소드
+      function ranColor() {
+        return `rgb(${Math.floor(Math.random() * 256)},
+                    ${Math.floor(Math.random() * 256)},
+                    ${Math.floor(Math.random() * 256)})`;
+      }
+
+      // 랜덤 글자크기를 생성하는 메소드
+      function ranFontSize(pMin, pMax) {
+        return `${pMin + Math.random() * (pMax - pMin)}em`;
+      }
+
+      const likeNames = [
+        "국현",
+        "지혜",
+        "수진",
+        "지완",
+        "정민",
+        "정수",
+        "영우",
+        "지현",
+        "성희",
+        "재균",
+        "성일",
+        "민욱",
+        "지영",
+        "현성",
+        "미나",
+        "대환",
+        "문기",
+        "기태",
+        "승우",
+        "동혁",
+        "민정",
+        "은지",
+        "이현",
+        "현근",
+        "다미",
+        "윤수",
+        "기현",
+      ];
+
+      // 문자열에서 이름만 바꾸는 메소드(ex : 민정, 은지)
+      function ranName() {
+        // 랜덤 이름을 뽑는다.
+        let rName = likeNames[Math.floor(Math.random() * likeNames.length)];
+
+        // 이름을 바꾼다.
+        document.querySelector("#jbk10").innerHTML = rName[0];
+        document.querySelector("#jbk11").innerHTML = rName[1];
+      }
+
+      // 반복적으로 이름 바꾸는 메소드
+      function ranChg() {
+        ranName();
+        setTimeout(ranChg, 3000);
+      }
+
+      // 초기화 블럭
+      function fInit() {
+        msgStr = `**** 고마워용 7e쌤 ****`.split("");
+        for (let i = 0; i < msgStr.length; i++) {
+          xPos[i] = -100;
+          yPos[i] = -100;
+        }
+
+        // 문자열을 글자 1개씩 쪼개서 DIV로 둘러싼다.
+        let charDiv;
+        for (let i = 0; i < msgStr.length; i++) {
+          charDiv = document.createElement("div");
+          charDiv.innerHTML = msgStr[i];
+          charDiv.id = `jbk${i}`;
+          charDiv.style.display = `inline-block`;
+          charDiv.style.position = `absolute`;
+          charDiv.style.left = "-100px";
+          charDiv.style.top = "-100px";
+          wrapDiv.appendChild(charDiv);
+        }
+
+        // 마우스 좌표에 따라 글자를 움직인다.
+        moveMouse();
+        // 3초에 한번씩 이름을 바꾼다.
+        ranChg();
+      }
+
+      // wrapper 위에서 마우스 움직일 때, 마우스 좌표를 가져오는 메소드
+      function mouseXY() {
+        x = event.clientX;
+        y = event.clientY;
+      }
+
+      // 반복적으로 읽히는 마우스 좌표에 따라 글자를 움직이는 메소드
+      function moveMouse() {
+        // 현재 마우스 좌표를 저장한다.
+        xPos[0] = x + xDist;
+        yPos[0] = y;
+
+        // 움직임을 생성한다. (첫글자, 마지막글자 제외)
+        for (let i = msgStr.length - 1; i > 0; i--) {
+          xPos[i] = xPos[i - 1] + xDist;
+          yPos[i] = yPos[i - 1];
+        }
+
+        for (let i = 0; i < msgStr.length; i++) {
+          // i번째 문자를 자져온다,
+          let charDiv = document.querySelector("#jbk" + i);
+
+          // 위치를 지정한다.
+          charDiv.style.left = `${xPos[i]}px`;
+          charDiv.style.top = `${yPos[i]}px`;
+
+          // 랜덤색상을 설정한다.
+          charDiv.style.color = ranColor();
+
+          // 랜덤글자크기를 설정한다.
+          charDiv.style.fontSize = ranFontSize(1, 5);
+        }
+
+        // 반복한다.
+        setTimeout(moveMouse, loopTime);
+      }
+
+      window.addEventListener("load", fInit);
+    </script>
+  </body>
+</html>
