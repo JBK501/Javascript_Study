@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>검색 드롭다운</title>
+    <style>
+      #wrapper {
+        margin: 20px auto;
+        width: 350px;
+        text-align: center;
+      }
+      #content {
+        width: 200px;
+        border: 2px solid blue;
+        display: none;
+      }
+      .sky {
+        font-size: 2em;
+        background-color: black;
+        color: yellow;
+        border-bottom: 1px solid pink;
+        width: 200px;
+        height: 50px;
+      }
+      input {
+        width: 350px;
+        height: 50px;
+        font-size: 1.5em;
+        background-color: rgb(85, 7, 133);
+        color: yellowgreen;
+      }
+      h1 {
+        background-color: black;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="wrapper">
+      <h1>검색텍스트 상자 구현</h1>
+      <h3>안수영,하상수,박미경,정종현,소경필</h3>
+      <h3>김지윤,백마리,천지훈,이주영,이제훈</h3>
+      <h3>서민혁,나예진,오미나,이윤,남희신</h3>
+      <h3>최충수,이광일,언년이,강산군,초랭이</h3>
+      <h3>금수,김선복,한모네,금라희,매튜리</h3>
+      <hr />
+      <br />
+      <div id="dropdown">
+        <input
+          type="text"
+          id="schText"
+          value=""
+          autofocus
+          placeholder="여기에 위 이름 검색해 보아용"
+        />
+        <div id="content"></div>
+      </div>
+    </div>
+    <script>
+      // basename 데이터
+      // 실제 사용할때는 DB에서 가져온 데이터가 저장됨.
+      const nameArr = [
+        "안수영",
+        "하상수",
+        "박미경",
+        "정종현",
+        "소경필",
+        "김지윤",
+        "백마리",
+        "천지훈",
+        "이주영",
+        "이제훈",
+        "서민혁",
+        "나예진",
+        "오미나",
+        "이윤",
+        "남희신",
+        "최충수",
+        "이광일",
+        "언년이",
+        "강산군",
+        "초랭이",
+        "금수",
+        "김선복",
+        "한모네",
+        "금라희",
+        "매튜리",
+      ];
+
+      const mySchText = document.querySelector("#schText"); // 검색창
+      const myContent = document.querySelector("#content"); // 검색결과창
+      //   console.log(mySchText);
+
+      let contentIndex = 0; // 검색창 인덱스
+      let v_searchDatas; // 검색결과 돔컨텐츠를 담을 변수
+      let schArr = []; // 검색완료된 데이터를 담는 배열
+
+      /* 검색창에서 아래방향키를 클릭했을 때 활성화시키는 메소드*/
+      const showSearchArrowDown = () => {
+        // 검색창 인덱스가 검색길이보다 크거나 같다면
+        if (contentIndex >= schArr.length - 1) {
+          // 이전에 활성화된 검색컨첸츠를 비활성화 한다.
+          v_searchDatas[contentIndex].style.backgroundColor = "black";
+
+          // 검색창 인덱스를 0으로 변경한다.
+          contentIndex = 0;
+
+          // 가장 첫번째 검색결과를 활성화 한다.
+          v_searchDatas[contentIndex].style.backgroundColor = "silver";
+
+          // 함수 종료
+          return;
+        }
+
+        // 검색창 인덱스를 증가시킨다.
+        contentIndex++;
+
+        // 이전에 활성화된 검색컨첸츠를 비활성화 한다.
+        v_searchDatas[contentIndex - 1].style.backgroundColor = "black";
+
+        // 다음 검색어를 활성화 시킨다.
+        v_searchDatas[contentIndex].style.backgroundColor = "silver";
+      };
+
+      /* 검색창에서 아래방향키를 클릭했을 때 활성화시키는 메소드*/
+      const showSearchArrowUp = () => {
+        // 검색창 인덱스가 0이라면
+        if (contentIndex <= 0) {
+          // 이전에 활성화된 검색컨첸츠를 비활성화 한다.
+          v_searchDatas[contentIndex].style.backgroundColor = "black";
+
+          // 검색창 인덱스를 마지막으로 변경한다.
+          contentIndex = v_searchDatas.length - 1;
+
+          // 가장 첫번째 검색결과를 활성화 한다.
+          v_searchDatas[contentIndex].style.backgroundColor = "silver";
+
+          // 함수 종료
+          return;
+        }
+
+        // 검색창 인덱스를 감소시킨다.
+        contentIndex--;
+
+        // 이전에 활성화된 검색컨첸츠를 비활성화 한다.
+        v_searchDatas[contentIndex + 1].style.backgroundColor = "black";
+
+        // 다음 검색어를 활성화 시킨다.
+        v_searchDatas[contentIndex].style.backgroundColor = "silver";
+      };
+
+      /* 검색창에서 엔터 클릭시 검색결과를 적용하는 메소드*/
+      const enterSearchResult = () => {
+        // 검색창 값을 변경한다.
+        mySchText.value = myContent.children[contentIndex].innerHTML;
+
+        // 검색결과값을 비운다.
+        myContent.style.display = "none";
+        schArr.length = 0;
+        contentIndex = 0;
+      };
+
+      /* 검색창 입력시 검색결과를 표시하는 메소드*/
+      const enterSearchData = (targetValue) => {
+        // 입력한 값이 비어있다면
+        if (!targetValue.trim()) {
+          // 검색결과를 비운 후 리턴한다.
+          myContent.innerHTML = "";
+          myContent.style.display = "none";
+          schArr.length = 0; // 이전 검색정보를 없앤다.
+          return;
+        }
+
+        // console.log("입력값 체크", targetValue);
+
+        // 이전 검색결과를 비운다.
+        myContent.innerHTML = "";
+        myContent.style.display = "none";
+        schArr.length = 0; // 이전 검색정보를 없앤다.
+
+        // 이름을 검색해서 일치하는 정보가 있다면 배열에 담는다.
+        nameArr.forEach((baseName) => {
+          if (baseName.includes(targetValue)) {
+            schArr.push(`<div class=sky>${baseName}</div>`);
+          }
+        });
+
+        // 찾은 이름이 있다면, 검색결과 컨텐츠에 표시한다.
+        if (schArr.length) {
+          schArr.forEach((name) => {
+            myContent.innerHTML += name;
+          });
+          // 검색결과 창을 활성화 한다.
+          myContent.style.display = "block";
+
+          // 검색결과들을 조회한다.
+          v_searchDatas = document.querySelectorAll(".sky");
+
+          // 검색결과 창의 첫번째 결과값을 활성화 한다.
+          v_searchDatas[contentIndex].style.backgroundColor = "silver";
+        }
+      };
+
+      /* 검색창 입력후 키보드에서 손가락을 뗐을 때 발생하는 이벤트 */
+      mySchText.addEventListener("keyup", (e) => {
+        if (schArr.length > 0 && e.keyCode == 40) {
+          // 검색값이 있고 아래 방향키를 클릭했을 때, 다음 검색결과를 활성화 시킨다.
+          showSearchArrowDown();
+        } else if (schArr.length > 0 && e.keyCode == 38) {
+          // 검색값이 있고, 윗방향키를 클릭했을 때, 이전 검색결과를 활성화 시킨다.
+          showSearchArrowUp();
+        } else if (
+          schArr.length > 0 &&
+          e.keyCode == 13 &&
+          myContent.children[contentIndex]
+        ) {
+          // 검색값이 있고 엔터를 클릭하고 검색결과창 결과값이 있을 때, 검색창에 검색결과를 적용한다.
+          enterSearchResult();
+        } else {
+          // 검색창을 입력했을 때
+          // 검색창 인덱스를 0으로 변경한다.
+          contentIndex = 0;
+
+          // 입력한 값을 표시한다.
+          enterSearchData(e.target.value);
+        }
+      });
+    </script>
+  </body>
+</html>

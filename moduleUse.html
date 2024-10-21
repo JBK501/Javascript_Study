@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<meta charset="UTF-8" />
+<script type="module">
+  /* import 키워드 */
+  import { blackPink as bP } from "./idolModule.js";
+  import { itzy as iZ } from "./idolModule.js";
+  // export default 정보가 import됨
+  import myLover from "./idolModule.js";
+
+  console.log("블랙핑크", bP);
+  console.log("블랙핑크 인사 : ", bP.insa());
+
+  console.log("있지:", iZ);
+  console.log("있지 인사:", iZ.insa());
+  console.log("myLover", myLover("mkJang 안농!"));
+
+  let myInsa = "나는 나얌";
+  window.bP = bP;
+  window.iZ = iZ;
+</script>
+
+<script type="module">
+  //   console.log("module", myInsa); // 공유안됨
+  console.log("module", bP); // 공유됨
+</script>
+
+<script>
+  //   console.log("an module ", myInsa); // 공유안됨
+  //   console.log("an module", bP); // 공유안됨
+</script>
