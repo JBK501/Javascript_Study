@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Form Serialize 만들기</title>
+  </head>
+  <body>
+    <form>
+      <table border="1">
+        <tr>
+          <td colspan="2">
+            <h1>Serialize 해봐용</h1>
+          </td>
+        </tr>
+        <tr>
+          <td>이름</td>
+          <td>
+            <input
+              type="text"
+              name="empName"
+              id="empName"
+              style="width: 95%"
+              pattern="[가-힣]{3,4}"
+              placeholder="한글 3~4글자"
+              value="금수저"
+              required
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>이메일</td>
+          <td>
+            <input
+              type="text"
+              name="empEmail"
+              id="empEmail"
+              pattern="[a-z0-9]+@[a-z]+\.[a-z]{2,3}"
+              style="width: 95%"
+              value="jbk@naver.com"
+              required
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>성별</td>
+          <td>
+            남<input type="radio" name="empSB" id="empSB" value="value" />
+            여<input
+              type="radio"
+              name="empSB"
+              id="empSB"
+              value="femail"
+              checked
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>역할</td>
+          <td>
+            <select name="empRole" id="empRole">
+              <option value="si">개발[SI]</option>
+              <option value="sm">유지보수[SM]</option>
+              <option value="mg" selected>매니저[총괄]</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>능력</td>
+          <td>
+            프론트<input
+              type="checkbox"
+              name="empScope"
+              id="empScope"
+              value="front"
+            />
+            백엔드<input
+              type="checkbox"
+              name="empScore"
+              id="empScope"
+              value="backend"
+            />
+            데이터베이스<input
+              type="checkbox"
+              name="empScope"
+              id="empScope"
+              value="db"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>간략자기소개</td>
+          <td>
+            <textarea
+              name="empAbout"
+              id="empAbout"
+              cols="30"
+              rows="10"
+              readonly
+            ></textarea>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" style="text-align: center">
+            <input type="submit" value="serBtn" id="serBtn" value="serialize" />
+            <input
+              type="submit"
+              value="jsonBtn"
+              id="jsonBtn"
+              aria-valuemax="serializeJSON"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <pre id="disp"></pre>
+          </td>
+        </tr>
+      </table>
+    </form>
+    <script>
+      /**************    임시 대책부     ***************/
+      document.querySelector("#empAbout").value =
+        "안농 난 JBK라고 행\n 아프로 뒤로 잘 지내보장"; // textarea에 직접 값을 넣으면 html 소스가 안 예쁨
+
+      /**************    전역변수 객체 선언부    ***************/
+      const empForm = document.forms[0];
+
+      const formElements = Array.from(empForm.elements); // 폼 요소들을 배열로 바꾼다.
+      //   console.log(formElements);
+      const justDisp = document.querySelector("#disp");
+
+      // 두 개의 submit 버튼을 배열로 저장한다.
+      const submitBtns = Array.from(
+        document.querySelectorAll("input[type=submit]")
+      );
+      //   console.log(submitBtns);
+
+      let whichBtn = ""; // 어느 submit 버튼을 눌렀는가 저장하는 변수
+
+      /* serialize 하기 전, 의미없는 element를 제거하는 함수 (서버로 전달할 필요가 없는 값 -> 예시 : 체크안된 체크박스) */
+      const preRemoveElement = () => {
+        // 배열의 filter 메소드를 이용해서 제거한다.
+        let selElements = formElements.filter((element) => {
+          // 그냥 버튼, submit 버튼, reset 버튼 제거
+          if (
+            element.type == "button" ||
+            element.type == "submit" ||
+            element.type == "reset"
+          ) {
+            return false; // 제거 하겠다는 의미
+          }
+          // 체크되지 않은 라디오나 체크박스 제거
+          if (
+            (element.type == "radio" || element.type == "checkbox") &&
+            !element.checked
+          ) {
+            return false;
+          }
+          return true; // 추가
+        });
+        return selElements;
+      };
+
+      /* 쿼리스트링 형태로 직렬화하는 메소드 */
+      const fFormSerialize = () => {
+        let serializeStr = ""; // 직렬화 결과를 담을 변수
+
+        // 의미없는 요소를 제거한 후, 직렬화 결과를 담는다.
+        preRemoveElement().forEach((element) => {
+          serializeStr += `${element.name}=${element.value}&`;
+        });
+
+        serializeStr = serializeStr.substr(0, serializeStr.length - 1); // 마지막 & 제거
+        console.log("시리얼 디버깅 : ", serializeStr);
+        justDisp.innerText = serializeStr; // 화면에 뿌린다.
+
+        return serializeStr;
+      };
+
+      /* JSON 형태로 직렬화하는 메소드 */
+      const fFormSerializeJSON = () => {
+        let jsonObj = {};
+        let arrForCheck = []; // 체크된 체크박스값을 담을 배열
+
+        //의미없는 요소를 제거한 후, 배열식 접근법을 이용해서 객체에 속성:값 형태를 추가한다.
+        preRemoveElement().forEach((element) => {
+          if (element.type == "checkbox") {
+            arrForCheck.push(element.value); // 체크된 체크박스값을 담는다.
+            jsonObj[element.name] == arrForCheck; // 추가된 배열을 저장한다.
+            return;
+          }
+          jsonObj[element.name] = element.value;
+        });
+
+        console.log("JSON 디버깅 : ", jsonObj);
+        let jsonStr = JSON.stringify(jsonObj);
+        justDisp.innerText = jsonStr;
+
+        return jsonStr;
+      };
+
+      /* submit 버튼 클릭하면, form객체에 전송 직전에 submit 이벤트 발생*/
+      const fSubmit = () => {
+        event.preventDefault();
+        if (whichBtn == "serBtn") {
+          alert("시리얼라이즈 누르셨어용");
+          alert(fFormSerialize());
+        } else {
+          alert("JSON 누르셨어용");
+          alert(fFormSerializeJSON());
+        }
+      };
+
+      /* submit 버튼을 클릭하면, 버튼 id를 전역변수에 저장하는 메소드*/
+      const fWhichBtn = () => {
+        whichBtn = event.target.id;
+      };
+
+      /**************    이벤트 등록부(바인딩)   ***************/
+      empForm.addEventListener("submit", fSubmit);
+
+      // submit 버튼 클릭 시, fWhichBtn 호출
+      submitBtns.forEach((btn) => {
+        btn.addEventListener("click", fWhichBtn);
+      });
+    </script>
+  </body>
+</html>
