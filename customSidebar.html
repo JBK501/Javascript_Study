@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>커스텀 사이드바</title>
+    <style>
+      #menuWrapper {
+        width: 200px;
+        text-align: center;
+        border: 5px solid pink;
+      }
+
+      .hide {
+        display: none;
+      }
+
+      .show {
+        display: block;
+        color: white;
+        font-weight: bolder;
+      }
+
+      .mmain {
+        cursor: pointer;
+      }
+
+      #menuTemp {
+        display: none;
+      }
+
+      .menu {
+        margin-bottom: 10px;
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <button onclick="fAddMenus()">확인용 메뉴추가 버튼</button>
+    <hr />
+    <div id="menuWrapper">
+      <div id="menuTemp" class="menu">
+        <div class="mmain" onclick="fSubClick(this)">메뉴이름</div>
+        <div class="msub hide">
+          <ul>
+            <li>서브메뉴1</li>
+            <li>서브메뉴2</li>
+            <li>서브메뉴3</li>
+            <li>서브메뉴4</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <script>
+      const menuWrapper = document.querySelector("#menuWrapper");
+      const menuTemp = document.querySelector("#menuTemp");
+      let curMenuNum = 0;
+
+      /* 랜덤 컬러를 생성하는 메소드 */
+      const fRanColor = () => {
+        return `rgb(
+            ${Math.floor(Math.random() * 256)},
+            ${Math.floor(Math.random() * 256)},
+            ${Math.floor(Math.random() * 256)}
+        )`;
+      };
+
+      /* 처음 클릭하거나, 같은 메뉴를 클릭했을 때 처리하는 메소드 */
+      const fSelfToggle = (eDiv) => {
+        // 현재 클릭한 메뉴정보를 저장한다.
+        curMenuNum = eDiv.parentElement.id.split("-")[1];
+
+        let subDiv = eDiv.nextElementSibling;
+
+        // 컨텐츠가 숨겨져 있는 지 여부를 구한다.
+        let curState = subDiv.classList.contains("hide");
+
+        // 컨텐츠가 숨겨져 있다면
+        if (curState) {
+          // 컨텐츠를 보여준 후, 반환한다.
+          subDiv.classList.remove("hide");
+          subDiv.classList.add("show");
+          subDiv.style.backgroundColor = fRanColor();
+          return;
+        }
+
+        // 아니면 컨텐츠를 숨긴다
+        subDiv.classList.remove("show");
+        subDiv.classList.add("hide");
+      };
+
+      /* 다른 메뉴 클릭시 처리하는 메소드 */
+      const fDiffClick = (eDiv) => {
+        // 현재 보여져 있는 컨텐츠를 닫는다.
+        let subDiv = menuWrapper.querySelector(`#menu-${curMenuNum}`)
+          .children[1];
+        subDiv.classList.remove("show");
+        subDiv.classList.add("hide");
+
+        // 클릭한 컨텐츠를 보여준다.
+        subDiv = eDiv.nextElementSibling; // eDiv.parentElement.children[1]
+        curMenuNum = eDiv.parentElement.id.split("-")[1];
+        subDiv.classList.remove("hide");
+        subDiv.classList.add("show");
+        subDiv.style.backgroundColor = fRanColor();
+      };
+
+      /* 메뉴클릭 옵션 */
+      const fSubClick = (eDiv) => {
+        // 처음클릭이거나 같은 메뉴 클릭시
+        if (!curMenuNum || curMenuNum == eDiv.parentElement.id.split("-")[1]) {
+          fSelfToggle(eDiv);
+        } else {
+          // 다른 메뉴 클릭시
+          fDiffClick(eDiv);
+        }
+      };
+
+      let i = 1; // id구분용 전역변수
+
+      /* 메뉴 추가 함수 */
+      const fAddMenus = () => {
+        const menuClone = menuTemp.cloneNode(true);
+        menuClone.setAttribute("id", `menu-${i}`);
+        menuClone.querySelector(".mmain").textContent = `메뉴${i}`;
+        const lis = menuClone.querySelectorAll("li");
+        lis.forEach((li, idx) => {
+          console.log(li);
+          li.textContent = `서브${i}-${idx}`;
+        });
+        i++;
+        menuWrapper.append(menuClone);
+        menuClone.style.display = "block";
+      };
+    </script>
+  </body>
+</html>
