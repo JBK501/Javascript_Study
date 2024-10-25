@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>fakerJS 사용</title>
+    <style>
+      #wrapper {
+        text-align: center;
+      }
+      .jbk-100 {
+        width: 50px;
+        height: 50px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="wrapper">
+      <div>
+        필요한 데이터 개수입력 :
+        <input type="text" id="txtCnt" value="10" /><br />
+        <button id="btnMake">JBK 가짜 데이터 만들기</button>
+      </div>
+      <hr />
+      <div id="divDisp"></div>
+    </div>
+    <script>
+      const divDisp = document.querySelector("#divDisp");
+      const txtCnt = document.querySelector("#txtCnt");
+      const btnMake = document.querySelector("#btnMake");
+
+      /* tr태그 마우스 오버 & 아웃 */
+      const fTrOver = (curTr) => {
+        curTr.style.backgroundColor = "black";
+        curTr.style.color = "yellow";
+      };
+
+      const fTrOut = (curTr) => {
+        curTr.style.backgroundColor = "white";
+        curTr.style.color = "black";
+      };
+    </script>
+    <!-- script type이 모듈임-->
+    <script type="module">
+      import { Faker, ko, en } from "https://esm.sh/@faker-js/faker";
+      //   import { Faker, es } from "@faker-js/faker";
+
+      /* Locale 셋팅 */
+      const fakerKO = new Faker({
+        locale: [ko],
+      });
+
+      const fakerEN = new Faker({
+        locale: [en],
+      });
+
+      const person = fakerKO.person;
+      //   console.log(person);
+      const personE = fakerEN.person;
+      const location = fakerKO.location;
+      const internet = fakerKO.internet;
+      const animal = fakerKO.animal;
+      const lorem = fakerKO.lorem;
+      const image = fakerKO.image;
+
+      /* 버튼 클릭 시, 더미데이터 생성하는 이벤트 */
+      btnMake.addEventListener("click", () => {
+        const people = [];
+
+        // 입력한 개수만큼 반복한다.
+        for (let i = 1; i <= txtCnt.value; i++) {
+          // 랜덤 데이터를 생성한다.
+          let name = `${person.lastName()} ${person.firstName()}`;
+          let email = personE.firstName().replaceAll(" ", "");
+          email += `@${internet.email().split("@")[1]}`;
+          let address = `${location.state()}`;
+          address += ` ${location.city()} `;
+          address += ` ${location.street()}`;
+          let avatar = image.avatar();
+
+          // 생성한 더미데이터를 객체로 변환한다.
+          let saram = {
+            name,
+            email,
+            age: Math.round(Math.random() * 80) + 20,
+            address,
+            avatar,
+          };
+          // 배열에 추가한다.
+          people.push(saram);
+
+          // 화면에 출력한다.
+          displayTable(people);
+        }
+      });
+
+      /* 헤더 칼럼명을 한글로 바꾸기 위한 셋팅 */
+      const HeaderNm = {
+        name: "이름",
+        email: "이메일",
+        age: "나이",
+        address: "주소",
+        avatar: "아바타",
+      };
+      Object.freeze(HeaderNm); // 다른곳에서 고칠 수 없도록 막는다.
+
+      /* 더미데이터를 화면에 출력하는 메소드 */
+      const displayTable = (dataArr) => {
+        // <table>
+        let tblStr = `<table border=1 style="width:100%">`;
+
+        // <thead>
+        let thead = `<thead><tr>`;
+        let headerNames = [];
+        // 헤더 칼럼명을 한글로 바꾼다.
+        for (let column in dataArr[0]) {
+          thead += `<th>${HeaderNm[column]}</th>`;
+          headerNames.push(column);
+        }
+        thead += `</thead>`;
+        tblStr += thead;
+
+        // <tbody>
+        let tbody = `<tbody>`;
+        dataArr.forEach((data, index) => {
+          // 이벤트 동적 바인딩은 아예 inline 이벤트로 박으면 좋음.
+          tbody += `<tr onmouseover='fTrOver(this)' onmouseout='fTrOut(this)'>`;
+          headerNames.forEach((colName) => {
+            if (colName == "avatar") {
+              let imgUL = data[colName];
+              tbody += `<td><img class="jbk-100" src=${imgUL}></td>`;
+            } else {
+              tbody += `<td>${data[colName]}</td>`;
+            }
+          });
+          tbody += `</tr>`;
+        });
+        // </table>
+        tblStr += `${tbody}</tbody></table>`;
+
+        divDisp.innerHTML = tblStr;
+      };
+    </script>
+  </body>
+</html>
